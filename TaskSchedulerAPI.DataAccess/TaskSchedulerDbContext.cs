@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.Entities;
-using Task = TaskSchedulerAPI.Core.Entities.Task;
+using Tasks = TaskSchedulerAPI.Core.Entities.Tasks;
 
 namespace TaskSchedulerAPI.DataAccess
 {
@@ -12,7 +12,7 @@ namespace TaskSchedulerAPI.DataAccess
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Task> Tasks { get; set; } 
+        public DbSet<Tasks> Tasks { get; set; } 
         public DbSet<UserTask> UserTasks { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<SystemSettings> SystemSettings { get; set; }
@@ -32,7 +32,7 @@ namespace TaskSchedulerAPI.DataAccess
                 .HasForeignKey(ut => ut.UserId);
 
             modelBuilder.Entity<UserTask>()
-                .HasOne(ut => ut.Task)
+                .HasOne(ut => ut.Tasks)
                 .WithMany(t => t.UserTasks)
                 .HasForeignKey(ut => ut.TaskId);
 
@@ -65,8 +65,8 @@ namespace TaskSchedulerAPI.DataAccess
     }
 );
 
-            modelBuilder.Entity<Task>().HasData(
-                new Task
+            modelBuilder.Entity<Tasks>().HasData(
+                new Tasks
                 {
                     Id = 1,
                     Name = "Task 1",
@@ -75,7 +75,7 @@ namespace TaskSchedulerAPI.DataAccess
                     IsCompleted = false,
                     CreatedAt = DateTime.UtcNow
                 },
-                new Task
+                new Tasks
                 {
                     Id = 2,
                     Name = "Task 2",

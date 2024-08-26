@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskSchedulerAPI.Core.Entities
 {
-    public class Task
+    public class Tasks
     {
         public int Id { get; set; }
         public string Name { get; set; }

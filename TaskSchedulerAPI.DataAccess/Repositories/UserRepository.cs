@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskSchedulerAPI.DataAccess.Repositories
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
+using Tasks = TaskSchedulerAPI.Core.Entities.Tasks;
 
 namespace TaskSchedulerAPI.DataAccess.Repositories
 {
@@ -13,29 +14,29 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Task>> GetAllAsync()
+        public async Task<IEnumerable<Tasks>> GetAllAsync()
         {
             return await _context.Tasks.ToListAsync();
         }
 
-        public async Task<Task> GetByIdAsync(int id)
+        public async Task<Tasks> GetByIdAsync(int id)
         {
             return await _context.Tasks.FindAsync(id);
         }
 
-        public async Task AddAsync(Task task)
+        public async Task AddAsync(Tasks task)
         {
             await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Task task)
+        public async Task UpdateAsync(Tasks task)
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Task task)
+        public async Task DeleteAsync(Tasks task)
         {
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
