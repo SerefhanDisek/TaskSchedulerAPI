@@ -15,7 +15,5 @@ namespace TaskSchedulerAPI.Core.Entities
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<UserTask> UserTasks { get; set; }
-
-
     }
 }
