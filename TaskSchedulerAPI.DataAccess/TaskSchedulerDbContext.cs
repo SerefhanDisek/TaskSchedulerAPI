@@ -37,33 +37,25 @@ namespace TaskSchedulerAPI.DataAccess
                 .HasForeignKey(ut => ut.TaskId);
 
             modelBuilder.Entity<User>().HasData(
-    new User
-    {
-        Id = 1,
-        FirstName = "John",
-        LastName = "Doe",
-        UserName = "johndoe",
-        Email = "johndoe@example.com",
-        PasswordHash = "hashed_password_1", 
-        PasswordSalt = "salt_1",
-        IsActive = true,
-        CreatedAt = DateTime.UtcNow,
-        LastLogin = DateTime.UtcNow
-    },
-    new User
-    {
-        Id = 2,
-        FirstName = "Jane",
-        LastName = "Doe",
-        UserName = "janedoe",
-        Email = "janedoe@example.com",
-        PasswordHash = "hashed_password_2", 
-        PasswordSalt = "salt_2",
-        IsActive = true,
-        CreatedAt = DateTime.UtcNow,
-        LastLogin = DateTime.UtcNow
-    }
-);
+            new User
+            {
+               Id = 1,
+               FirstName = "Şerefhan",
+               LastName = "Dişek",
+               UserName = "Şeref",
+               Email = "seref@example.com",
+               Password = "Password1",
+            },
+            new User
+            {
+                Id = 2,
+                FirstName = "Yusuf",
+                LastName = "Kaya",
+                UserName = "Yusuf",
+                Email = "yusuf@example.com",
+                Password = "Password2"
+            }
+        );
 
             modelBuilder.Entity<Tasks>().HasData(
                 new Tasks
