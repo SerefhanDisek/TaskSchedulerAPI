@@ -54,5 +54,15 @@ namespace TaskSchedulerAPI.Business.Services
             await _userRepository.DeleteAsync(user);
             return true;
         }
+
+        public Task RegisterAsync(UserRegisterDto registerDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> AuthenticateAsync(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

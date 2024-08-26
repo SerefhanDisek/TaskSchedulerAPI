@@ -21,6 +21,9 @@ namespace TaskSchedulerAPI.Core.MappingProfiles
             CreateMap<User, UserLoginDto>();
             CreateMap<UserLoginDto, User>();
 
+            CreateMap<User, UserRegisterDto>();
+            CreateMap<UserRegisterDto, User>();
+
             //Task
             CreateMap<Tasks, TaskDto>();
             CreateMap<TaskDto, Tasks>();
