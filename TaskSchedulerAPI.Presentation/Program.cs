@@ -5,10 +5,15 @@ using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;
 using TaskSchedulerAPI.DataAccess.Repositories;
 using TaskSchedulerAPI.Business.Services;
+using FluentValidation.AspNetCore;
+using TaskSchedulerAPI.Core.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<UserCreateDtoValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -21,7 +26,7 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
-builder.Services.AddAutoMapper(typeof(TaskScheduler));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

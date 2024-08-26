@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces.Services;
+using TaskSchedulerAPI.DataAccess;
 
 namespace TaskSchedulerAPI.Presentation.Controllers
 {
@@ -9,10 +11,12 @@ namespace TaskSchedulerAPI.Presentation.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly TaskSchedulerDbContext _context;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, TaskSchedulerDbContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
         [HttpGet]
