@@ -8,6 +8,7 @@ using TaskSchedulerAPI.Business.Services;
 using FluentValidation.AspNetCore;
 using TaskSchedulerAPI.Core.Validators;
 using FluentValidation;
+using TaskSchedulerAPI.Core.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,8 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 var app = builder.Build();
 

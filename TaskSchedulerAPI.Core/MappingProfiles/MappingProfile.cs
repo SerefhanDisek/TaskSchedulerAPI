@@ -4,9 +4,9 @@ using AutoMapper;
 
 namespace TaskSchedulerAPI.Core.MappingProfiles
 {
-    public class UserProfile : Profile
+    public class MappingProfile : Profile
     {
-        public UserProfile()
+        public MappingProfile()
         {
             //User
             CreateMap<User, UserDto>();
