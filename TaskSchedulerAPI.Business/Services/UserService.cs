@@ -1,38 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskSchedulerAPI.Core.DTOs;
+﻿using TaskSchedulerAPI.Core.DTOs;
+using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
+using AutoMapper;
+using TaskSchedulerAPI.Core.Interfaces;
+using TaskSchedulerAPI.Core.Interfaces.Repositories;
 
 namespace TaskSchedulerAPI.Business.Services
 {
     public class UserService : IUserService
     {
-        public Task<UserDto> CreateUserAsync(UserCreateDto userDto)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public Task<bool> DeleteUserAsync(int id)
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public Task<IEnumerable<UserDto>> GetAllUsersAsync()
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdAsync(id);
+            return _mapper.Map<UserDto>(user);
         }
 
-        public Task<UserDto> GetUserByIdAsync(int id)
+        public async Task<UserDto> CreateUserAsync(UserCreateDto userDto)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<User>(userDto);
+            await _userRepository.AddAsync(user);
+            return _mapper.Map<UserDto>(user);
         }
 
-        public Task<bool> UpdateUserAsync(int id, UserUpdateDto userDto)
+        public async Task<bool> UpdateUserAsync(int id, UserUpdateDto userDto)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null) return false;
+
+            _mapper.Map(userDto, user);
+            await _userRepository.UpdateAsync(user);
+            return true;
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null) return false;
+
+            await _userRepository.DeleteAsync(user);
+            return true;
         }
     }
 }
