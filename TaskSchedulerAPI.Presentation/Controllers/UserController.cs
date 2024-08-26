@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.DTOs;
@@ -6,6 +7,7 @@ using TaskSchedulerAPI.DataAccess;
 
 namespace TaskSchedulerAPI.Presentation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase

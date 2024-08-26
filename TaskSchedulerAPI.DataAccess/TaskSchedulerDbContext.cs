@@ -40,10 +40,10 @@ namespace TaskSchedulerAPI.DataAccess
             new User
             {
                Id = 1,
-               FirstName = "Şerefhan",
-               LastName = "Dişek",
-               UserName = "Şeref",
-               Email = "seref@example.com",
+               FirstName = "Seref",
+               LastName = "Disek",
+               UserName = "Serefhan",
+               Email = "serefhan@example.com",
                Password = "Password1",
             },
             new User

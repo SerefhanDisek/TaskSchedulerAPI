@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Text;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
+using TaskSchedulerAPI.DataAccess;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -13,23 +15,50 @@ public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IConfiguration _configuration;
+    private readonly TaskSchedulerDbContext _context;
 
-    public AuthController(IUserService userService, IConfiguration configuration)
+    public AuthController(IUserService userService, IConfiguration configuration, TaskSchedulerDbContext context)
     {
         _userService = userService;
         _configuration = configuration;
+        _context = context;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(UserRegisterDto registerDto)
+    public async Task<ResultDto> RegisterAsync(UserRegisterDto registerDto)
     {
-        var result = await _userService.RegisterAsync(registerDto);
-        if (!result.IsSuccess)
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
+
+        if (existingUser != null)
         {
-            return BadRequest(result.Message);
+            return new ResultDto
+            {
+                IsSuccessed = false,
+                Message = "Username or email already exists."
+            };
         }
-        return Ok(result);
+
+        // Yeni kullanıcı oluşturma
+        var newUser = new User
+        {
+            UserName = registerDto.UserName,
+            Email = registerDto.Email,
+            Password = registerDto.Password,
+        };
+
+        // Kullanıcıyı veritabanına ekleme
+        _context.Users.Add(newUser);
+        await _context.SaveChangesAsync();
+
+        // Başarılı sonuç döndürme
+        return new ResultDto
+        {
+            IsSuccessed = true,
+            Message = "User registered successfully."
+        };
     }
+
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLoginDto loginDto)
