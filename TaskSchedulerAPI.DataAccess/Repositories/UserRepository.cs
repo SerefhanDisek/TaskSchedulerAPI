@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.Entities;
-using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Repositories;
 using Task = System.Threading.Tasks.Task;
 

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 

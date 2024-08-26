@@ -2,7 +2,6 @@
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using AutoMapper;
-using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Repositories;
 
 namespace TaskSchedulerAPI.Business.Services

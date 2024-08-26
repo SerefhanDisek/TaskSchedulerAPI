@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
-using TaskSchedulerAPI.DataAccess.Repositories;
 
 namespace TaskSchedulerAPI.Business.Services
 {
