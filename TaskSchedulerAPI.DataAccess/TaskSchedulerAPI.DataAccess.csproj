@@ -19,8 +19,4 @@
     <ProjectReference Include="..\TaskSchedulerAPI.Core\TaskSchedulerAPI.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
