@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;

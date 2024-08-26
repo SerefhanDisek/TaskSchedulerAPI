@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace TaskSchedulerAPI.Core.Entities
+﻿namespace TaskSchedulerAPI.Core.Entities
 {
     public class User
     {

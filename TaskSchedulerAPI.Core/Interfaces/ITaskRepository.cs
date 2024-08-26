@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TaskSchedulerAPI.Core.Entities;
+﻿using TaskSchedulerAPI.Core.Entities;
 
 namespace TaskSchedulerAPI.Core.Interfaces
 {
