@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaskSchedulerAPI.Core.Entities
 {
-    internal class SystemSettings
+    public class SystemSettings
     {
+        public int Id { get; set; }  
+        public string ApplicationName { get; set; }  
+        public string DefaultLanguage { get; set; }  
+        public bool MaintenanceMode { get; set; }  
     }
+
 }

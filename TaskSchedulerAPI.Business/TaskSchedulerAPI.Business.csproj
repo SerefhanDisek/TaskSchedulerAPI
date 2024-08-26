@@ -15,4 +15,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskSchedulerAPI.Core\TaskSchedulerAPI.Core.csproj" />
+    <ProjectReference Include="..\TaskSchedulerAPI.DataAccess\TaskSchedulerAPI.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

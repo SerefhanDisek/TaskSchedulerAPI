@@ -9,9 +9,9 @@ namespace TaskSchedulerAPI.Core.Entities
     public class UserTask
     {
         public int UserId { get; set; }
-        public User user { get; set; }
+        public User User { get; set; }
         public int TaskId { get; set; }
-        public Task task { get; set; }
+        public Task Task { get; set; }
         public DateTime AssignedAt { get; set; }
         public bool IsCompleted { get; set; }
     }

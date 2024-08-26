@@ -16,4 +16,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskSchedulerAPI.Business\TaskSchedulerAPI.Business.csproj" />
+    <ProjectReference Include="..\TaskSchedulerAPI.Core\TaskSchedulerAPI.Core.csproj" />
+  </ItemGroup>
+
 </Project>
