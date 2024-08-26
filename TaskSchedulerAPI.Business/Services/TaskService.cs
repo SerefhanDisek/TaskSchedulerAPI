@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaskSchedulerAPI.Core.DTOs;
+using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 
@@ -18,7 +19,7 @@ namespace TaskSchedulerAPI.Business.Services
 
         public async Task<TaskDto> CreateTaskAsync(TaskCreateDto taskDto)
         {
-            var task = _mapper.Map<Task>(taskDto);
+            var task = _mapper.Map<Tasks>(taskDto);
             await _taskRepository.AddAsync(task);
             return _mapper.Map<TaskDto>(task);
         }
