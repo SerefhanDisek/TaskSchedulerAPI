@@ -3,6 +3,8 @@ using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using AutoMapper;
 using TaskSchedulerAPI.Core.Interfaces.Repositories;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TaskSchedulerAPI.Business.Services
 {
@@ -60,9 +62,33 @@ namespace TaskSchedulerAPI.Business.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> AuthenticateAsync(string userName, string password)
+        public async Task<User> AuthenticateAsync(string userName, string password)
         {
-            throw new NotImplementedException();
+            
+            var user = await _userRepository.GetByUserNameAsync(userName);
+
+            if (user == null)
+            {
+                return null; 
+            }
+
+            if (user.Password != password)
+            {
+                return null; 
+            }
+
+            return user; 
         }
+
+        /*private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            using (var hmac = new HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(storedHash);
+            }
+        }*/
+
+
     }
 }

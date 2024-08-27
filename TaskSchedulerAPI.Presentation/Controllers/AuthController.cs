@@ -42,6 +42,8 @@ public class AuthController : ControllerBase
         // Yeni kullanıcı oluşturma
         var newUser = new User
         {
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
             UserName = registerDto.UserName,
             Email = registerDto.Email,
             Password = registerDto.Password,
@@ -70,27 +72,33 @@ public class AuthController : ControllerBase
         }
 
         var token = GenerateJwtToken(user);
-        return Ok(new { token });
+
+        return Ok(new
+        {
+            message = "Giriş başarılı",
+            token = token
+        });
     }
 
     private string GenerateJwtToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        // En az 32 karakter uzunluğunda bir anahtar
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            
         };
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
+            issuer: _configuration["JwtSettings:Issuer"],
+            audience: _configuration["JwtSettings:Audience"],
             claims: claims,
             expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: credentials
-        );
+            signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

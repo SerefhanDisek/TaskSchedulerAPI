@@ -9,5 +9,6 @@ namespace TaskSchedulerAPI.Core.Interfaces.Repositories
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(User user);
+        Task<User> GetByUserNameAsync(string userName);
     }
 }

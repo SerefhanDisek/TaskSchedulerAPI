@@ -41,5 +41,10 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User> GetByUserNameAsync(string userName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
     }
 }
