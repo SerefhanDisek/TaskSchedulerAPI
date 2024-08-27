@@ -1,4 +1,5 @@
-﻿using TaskSchedulerAPI.Core.Entities;
+﻿using System.Linq.Expressions;
+using TaskSchedulerAPI.Core.Entities;
 
 namespace TaskSchedulerAPI.Core.Interfaces
 {
@@ -9,5 +10,8 @@ namespace TaskSchedulerAPI.Core.Interfaces
         Task<Tasks> GetByIdAsync(int id);
         Task UpdateAsync(Tasks task);
         Task AddAsync(Tasks task);
+        Task Update(Tasks task);
+        Task SaveChangesAsync();
+        Task<List<Tasks>> GetAllAsync(Expression<Func<Tasks, bool>> predicate);
     }
 }

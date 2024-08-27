@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
+using TaskSchedulerAPI.DataAccess;
 
 namespace TaskSchedulerAPI.Business.Services
 {
@@ -10,11 +14,13 @@ namespace TaskSchedulerAPI.Business.Services
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IMapper _mapper;
+        private readonly TaskSchedulerDbContext _context;
 
-        public TaskService (ITaskRepository taskRepository, IMapper mapper)
+        public TaskService (ITaskRepository taskRepository, IMapper mapper, TaskSchedulerDbContext context)
         {
             _taskRepository = taskRepository;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<TaskDto> CreateTaskAsync(TaskCreateDto taskDto)
@@ -54,5 +60,16 @@ namespace TaskSchedulerAPI.Business.Services
             await _taskRepository.UpdateAsync(task);
             return true;
         }
+
+        public async Task<List<Tasks>> GetAllAsync(Expression<Func<Tasks, bool>> predicate)
+        {
+            return await _context.Tasks.Where(predicate).ToListAsync();
+        }
+
+        public async Task<List<Tasks>> GetUncompletedTasksAsync()
+        {
+            return await _taskRepository.GetAllAsync(task => !task.IsCompleted);
+        }
+
     }
 }

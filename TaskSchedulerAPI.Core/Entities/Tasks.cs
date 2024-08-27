@@ -8,6 +8,8 @@
         public DateTime DueDate { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int? AssignedUserId { get; set; }
         public ICollection<UserTask> UserTasks { get; set; }
+
     }
 }

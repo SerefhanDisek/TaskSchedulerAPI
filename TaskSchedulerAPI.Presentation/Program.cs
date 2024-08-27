@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,15 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
+builder.Services.AddScoped<ITaskDistributionService, TaskDistributionService>();
+
+builder.Services.AddHangfire(config =>
+{
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -103,6 +113,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseHttpsRedirection();
+
+app.UseHangfireDashboard("/hangfire");
+
+RecurringJob.AddOrUpdate<ITaskDistributionService>(
+    "task-distribution-job",
+    service => service.DistributeTasksAsync(),
+    Cron.Daily(8, 0)
+);
 
 app.UseAuthentication();
 app.UseAuthorization();

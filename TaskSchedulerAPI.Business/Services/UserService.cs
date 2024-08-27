@@ -3,8 +3,6 @@ using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using AutoMapper;
 using TaskSchedulerAPI.Core.Interfaces.Repositories;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace TaskSchedulerAPI.Business.Services
 {
@@ -79,16 +77,6 @@ namespace TaskSchedulerAPI.Business.Services
 
             return user; 
         }
-
-        /*private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
-        {
-            using (var hmac = new HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(storedHash);
-            }
-        }*/
-
 
     }
 }

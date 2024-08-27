@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TaskSchedulerAPI.Core.Interfaces;
 using Tasks = TaskSchedulerAPI.Core.Entities.Tasks;
 
@@ -39,6 +40,22 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
         {
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(Tasks task)
+        {
+            _context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Tasks>> GetAllAsync(Expression<Func<Tasks, bool>> predicate)
+        {
+            return await _context.Set<Tasks>().Where(predicate).ToListAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using TaskSchedulerAPI.Core.DTOs;
+using TaskSchedulerAPI.Core.Entities;
 
 namespace TaskSchedulerAPI.Core.Interfaces.Services
 {
@@ -9,6 +10,7 @@ namespace TaskSchedulerAPI.Core.Interfaces.Services
         Task<TaskDto> CreateTaskAsync(TaskCreateDto taskDto);
         Task<bool> UpdateTaskAsync(int id, TaskUpdateDto taskDto);
         Task<bool> DeleteTaskAsync(int id);
+        Task<List<Tasks>> GetUncompletedTasksAsync();
     }
 }
 
