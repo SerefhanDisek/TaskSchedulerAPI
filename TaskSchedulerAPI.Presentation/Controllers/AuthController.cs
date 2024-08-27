@@ -39,7 +39,6 @@ public class AuthController : ControllerBase
             };
         }
 
-        // Yeni kullanıcı oluşturma
         var newUser = new User
         {
             FirstName = registerDto.FirstName,
@@ -49,11 +48,9 @@ public class AuthController : ControllerBase
             Password = registerDto.Password,
         };
 
-        // Kullanıcıyı veritabanına ekleme
         _context.Users.Add(newUser);
         await _context.SaveChangesAsync();
 
-        // Başarılı sonuç döndürme
         return new ResultDto
         {
             IsSuccessed = true,
@@ -76,13 +73,13 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             message = "Giriş başarılı",
-            token = token
+            token = token 
         });
     }
 
+
     private string GenerateJwtToken(User user)
     {
-        // En az 32 karakter uzunluğunda bir anahtar
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
