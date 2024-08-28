@@ -58,7 +58,6 @@ namespace TaskSchedulerAPI.Business.Services
                 return false;
             }
 
-            // DTO'dan gelen verilerle mevcut görevi güncelleme
             _mapper.Map(taskUpdateDto, existingTask);
 
             _taskRepository.Update(existingTask);
