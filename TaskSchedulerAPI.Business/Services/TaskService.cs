@@ -35,7 +35,7 @@ namespace TaskSchedulerAPI.Business.Services
             return _mapper .Map<IEnumerable<TaskDto>>(task);
         }
 
-        public async Task<bool> DeleteTaskAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
             var task = await _taskRepository.GetByIdAsync(id);
             if (task == null) return false;
@@ -50,13 +50,20 @@ namespace TaskSchedulerAPI.Business.Services
             return _mapper.Map<TaskDto>(task);
         }
 
-        public async Task<bool> UpdateTaskAsync(int id, TaskUpdateDto taskDto)
+        public async Task<bool> UpdateTaskAsync(TaskUpdateDto taskUpdateDto)
         {
-            var task = await _taskRepository.GetByIdAsync(id);
-            if (task == null) return false;
+            var existingTask = await _taskRepository.GetByIdAsync(taskUpdateDto.Id);
+            if (existingTask == null)
+            {
+                return false;
+            }
 
-            _mapper.Map(taskDto, task);
-            await _taskRepository.UpdateAsync(task);
+            // DTO'dan gelen verilerle mevcut görevi güncelleme
+            _mapper.Map(taskUpdateDto, existingTask);
+
+            _taskRepository.Update(existingTask);
+            await _taskRepository.SaveChangesAsync();
+
             return true;
         }
 
@@ -86,7 +93,6 @@ namespace TaskSchedulerAPI.Business.Services
             _context.UserTasks.Add(userTask);
             await _context.SaveChangesAsync();
         }
-
 
     }
 }

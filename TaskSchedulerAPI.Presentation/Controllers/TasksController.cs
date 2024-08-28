@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskSchedulerAPI.Business.Services;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;
@@ -27,12 +28,38 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return Ok(task);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
             var tasks = await _taskService.GetAllTasksAsync();
             return Ok(tasks);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var result = await _taskService.DeleteUserAsync(id);
+            if (!result)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskUpdateDto taskUpdateDto)
+        {
+            if (id != taskUpdateDto.Id)
+            {
+                return BadRequest("Task ID mismatch.");
+            }
+
+            var result = await _taskService.UpdateTaskAsync(taskUpdateDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

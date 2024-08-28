@@ -36,7 +36,6 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
             await Task.CompletedTask;
         }
 
-
         public async Task DeleteAsync(Tasks task)
         {
             _context.Tasks.Remove(task);
