@@ -15,10 +15,16 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Hangfire;
 using Serilog;
+using TaskSchedulerAPI.Core.Middleware;
+using TaskSchedulerAPI.Core.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<UnauthorizedExceptionFilter>();
+});
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<UserCreateDtoValidator>();
 builder.Services.AddEndpointsApiExplorer();
@@ -128,6 +134,8 @@ RecurringJob.AddOrUpdate<ITaskDistributionService>(
     service => service.DistributeTasksAsync(),
     Cron.Daily(8, 0)
 );
+
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
