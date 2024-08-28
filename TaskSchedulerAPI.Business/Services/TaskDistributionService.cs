@@ -53,7 +53,7 @@ public class TaskDistributionService : ITaskDistributionService
                     taskDto.AssignedUserId = user.Id;
 
                     var taskEntity = _mapper.Map<Tasks>(taskDto);
-                    _taskRepository.Update(taskEntity);
+                    await _taskRepository.UpdateAsync(taskEntity);
 
                     taskIndex++;
                     assignedTaskCount++;
@@ -69,16 +69,19 @@ public class TaskDistributionService : ITaskDistributionService
             taskDto.AssignedUserId = users.ElementAt(i).Id;
 
             var taskEntity = _mapper.Map<Tasks>(taskDto);
-            _taskRepository.Update(taskEntity);
+            await _taskRepository.UpdateAsync(taskEntity);
 
             taskIndex++;
             _logger.LogInformation("Kullanıcıya {UserId} - {UserName} ek görev atanmıştır.", users.ElementAt(i).Id, users.ElementAt(i).UserName);
         }
 
+        // Tüm task güncellemelerinden sonra tek bir SaveChangesAsync çağrısı
         await _taskRepository.SaveChangesAsync();
 
         _logger.LogInformation("Task dağıtımı tamamlandı. {TaskCount} task dağıtıldı.", uncompletedTasks.Count);
     }
+
+
 
     public async Task<bool> AssignTaskToUserAsync(int taskId, int userId)
     {

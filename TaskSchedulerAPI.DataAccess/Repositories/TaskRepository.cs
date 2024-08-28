@@ -33,8 +33,9 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
         public async Task UpdateAsync(Tasks task)
         {
             _context.Tasks.Update(task);
-            await _context.SaveChangesAsync();
+            await Task.CompletedTask;
         }
+
 
         public async Task DeleteAsync(Tasks task)
         {
