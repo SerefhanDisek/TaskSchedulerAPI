@@ -12,7 +12,12 @@ public class TaskDistributionService : ITaskDistributionService
     private readonly IMapper _mapper;
     private readonly ILogger<TaskDistributionService> _logger;
 
-    public TaskDistributionService(ITaskService taskService, IUserService userService, ITaskRepository taskRepository, IMapper mapper, ILogger<TaskDistributionService> logger)
+    public TaskDistributionService(
+        ITaskService taskService,
+        IUserService userService,
+        ITaskRepository taskRepository,
+        IMapper mapper,
+        ILogger<TaskDistributionService> logger)
     {
         _taskService = taskService;
         _userService = userService;
@@ -26,7 +31,7 @@ public class TaskDistributionService : ITaskDistributionService
         var uncompletedTasks = await _taskService.GetUncompletedTasksAsync();
         var users = await _userService.GetAllUsersAsync();
 
-        if (users.Count() == 0 || uncompletedTasks.Count() == 0)
+        if (!users.Any() || !uncompletedTasks.Any())
         {
             _logger.LogWarning("Task dağıtımı yapılamadı. Kullanıcı sayısı: {UserCount}, Task sayısı: {TaskCount}", users.Count(), uncompletedTasks.Count());
             return;
@@ -74,4 +79,63 @@ public class TaskDistributionService : ITaskDistributionService
 
         _logger.LogInformation("Task dağıtımı tamamlandı. {TaskCount} task dağıtıldı.", uncompletedTasks.Count);
     }
+
+    public async Task<bool> AssignTaskToUserAsync(int taskId, int userId)
+    {
+        var task = await _taskService.GetTaskByIdAsync(taskId);
+        var user = await _userService.GetUserByIdAsync(userId);
+
+        if (task == null || user == null)
+        {
+            _logger.LogWarning("Task veya Kullanıcı bulunamadı.");
+            return false;
+        }
+
+        if (task.AssignedUserId.HasValue)
+        {
+            _logger.LogWarning("Task zaten atanmış.");
+            return false;
+        }
+
+        task.AssignedUserId = userId;
+        var taskEntity = _mapper.Map<Tasks>(task);
+        _taskRepository.Update(taskEntity);
+
+        await _taskRepository.SaveChangesAsync();
+
+        _logger.LogInformation("Task {TaskId} kullanıcı {UserId}'ye atanmıştır.", taskId, userId);
+        return true;
+    }
+
+    public async Task<bool> UpdateTaskAssignmentAsync(int taskId, int userId)
+    {
+        var task = await _taskService.GetTaskByIdAsync(taskId);
+        var user = await _userService.GetUserByIdAsync(userId);
+
+        if (task == null || user == null)
+        {
+            _logger.LogWarning("Task veya Kullanıcı bulunamadı.");
+            return false;
+        }
+
+        var previousUserId = task.AssignedUserId;
+
+        task.AssignedUserId = userId;
+        var taskEntity = _mapper.Map<Tasks>(task);
+        _taskRepository.Update(taskEntity);
+
+        await _taskRepository.SaveChangesAsync();
+
+        if (previousUserId.HasValue)
+        {
+            _logger.LogInformation("Task {TaskId}, kullanıcı {PreviousUserId}'den kullanıcı {UserId}'ye atanmıştır.", taskId, previousUserId, userId);
+        }
+        else
+        {
+            _logger.LogInformation("Task {TaskId}, kullanıcı {UserId}'ye atanmıştır.", taskId, userId);
+        }
+
+        return true;
+    }
 }
+

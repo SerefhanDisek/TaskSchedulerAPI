@@ -21,6 +21,30 @@ public class TaskDistributionController : ControllerBase
         return Ok("Tasks have been distributed.");
     }
 
+    [HttpPost("assign")]
+    public async Task<IActionResult> AssignTaskToUser(int taskId, int userId)
+    {
+        var result = await _taskDistributionService.AssignTaskToUserAsync(taskId, userId);
+        if (!result)
+        {
+            return BadRequest("Task could not be assigned to user.");
+        }
+
+        return Ok("Task assigned to user successfully.");
+    }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateTaskAssignment(int taskId, int userId)
+    {
+        var result = await _taskDistributionService.UpdateTaskAssignmentAsync(taskId, userId);
+        if (!result)
+        {
+            return BadRequest("Task assignment could not be updated.");
+        }
+
+        return Ok("Task assignment updated successfully.");
+    }
+
     [HttpPost("trigger-log")]
     public IActionResult TriggerLog()
     {

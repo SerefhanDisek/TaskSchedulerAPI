@@ -41,6 +41,11 @@ namespace TaskSchedulerAPI.Core.MappingProfiles
             //SystemSettings
             CreateMap<SystemSettings, UpdateSystemSettingsDto>();
             CreateMap<UpdateSystemSettingsDto, SystemSettings>();
+
+            //TaskDistribution
+            CreateMap<TaskDto, Tasks>()
+            .ForMember(dest => dest.AssignedUserId, opt => opt.MapFrom(src => src.AssignedUserId));
+
         }
     }
 }

@@ -70,5 +70,23 @@ namespace TaskSchedulerAPI.Business.Services
             return await _taskRepository.GetAllAsync(task => !task.IsCompleted);
         }
 
+        public async Task AssignTaskToUserAsync(int taskId, int userId)
+        {
+            var task = await _taskRepository.GetByIdAsync(taskId);
+            if (task == null) throw new Exception("Task not found");
+
+            var userTask = new UserTask
+            {
+                UserId = userId,
+                TaskId = taskId,
+                AssignedAt = DateTime.UtcNow,
+                IsCompleted = false
+            };
+
+            _context.UserTasks.Add(userTask);
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }
