@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Entities;

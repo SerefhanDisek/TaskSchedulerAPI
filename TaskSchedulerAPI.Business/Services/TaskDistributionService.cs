@@ -2,7 +2,7 @@
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.Core.Interfaces;
-using TaskSchedulerAPI.Core.DTOs;
+using Microsoft.Extensions.Logging;
 
 public class TaskDistributionService : ITaskDistributionService
 {
@@ -10,13 +10,15 @@ public class TaskDistributionService : ITaskDistributionService
     private readonly IUserService _userService;
     private readonly ITaskRepository _taskRepository;
     private readonly IMapper _mapper;
+    private readonly ILogger<TaskDistributionService> _logger;
 
-    public TaskDistributionService(ITaskService taskService, IUserService userService, ITaskRepository taskRepository, IMapper mapper)
+    public TaskDistributionService(ITaskService taskService, IUserService userService, ITaskRepository taskRepository, IMapper mapper, ILogger<TaskDistributionService> logger)
     {
         _taskService = taskService;
         _userService = userService;
         _taskRepository = taskRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task DistributeTasksAsync()
@@ -43,7 +45,6 @@ public class TaskDistributionService : ITaskDistributionService
                     var taskDto = uncompletedTasks[taskIndex];
                     taskDto.AssignedUserId = user.Id;
 
-                    // DTO'yu Tasks entity'sine dönüştürme
                     var taskEntity = _mapper.Map<Tasks>(taskDto);
                     _taskRepository.Update(taskEntity);
 
