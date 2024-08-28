@@ -28,16 +28,18 @@ public class TaskDistributionService : ITaskDistributionService
 
         if (users.Count() == 0 || uncompletedTasks.Count() == 0)
         {
+            _logger.LogWarning("Task dağıtımı yapılamadı. Kullanıcı sayısı: {UserCount}, Task sayısı: {TaskCount}", users.Count(), uncompletedTasks.Count());
             return;
         }
 
         int taskPerUser = uncompletedTasks.Count() / users.Count();
         int remainingTasks = uncompletedTasks.Count() % users.Count();
-
         int taskIndex = 0;
 
         foreach (var user in users)
         {
+            int assignedTaskCount = 0;
+
             for (int i = 0; i < taskPerUser; i++)
             {
                 if (taskIndex < uncompletedTasks.Count)
@@ -49,22 +51,27 @@ public class TaskDistributionService : ITaskDistributionService
                     _taskRepository.Update(taskEntity);
 
                     taskIndex++;
+                    assignedTaskCount++;
                 }
             }
+
+            _logger.LogInformation("Kullanıcıya {UserId} - {UserName} {AssignedTaskCount} görev atanmıştır.", user.Id, user.UserName, assignedTaskCount);
         }
 
-        var userList = users.ToList();
         for (int i = 0; i < remainingTasks; i++)
         {
             var taskDto = uncompletedTasks[taskIndex];
-            taskDto.AssignedUserId = userList[i].Id;
+            taskDto.AssignedUserId = users.ElementAt(i).Id;
 
             var taskEntity = _mapper.Map<Tasks>(taskDto);
             _taskRepository.Update(taskEntity);
 
             taskIndex++;
+            _logger.LogInformation("Kullanıcıya {UserId} - {UserName} ek görev atanmıştır.", users.ElementAt(i).Id, users.ElementAt(i).UserName);
         }
 
         await _taskRepository.SaveChangesAsync();
+
+        _logger.LogInformation("Task dağıtımı tamamlandı. {TaskCount} task dağıtıldı.", uncompletedTasks.Count);
     }
 }

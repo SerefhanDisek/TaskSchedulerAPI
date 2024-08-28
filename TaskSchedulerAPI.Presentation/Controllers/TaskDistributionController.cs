@@ -20,5 +20,12 @@ public class TaskDistributionController : ControllerBase
         await _taskDistributionService.DistributeTasksAsync();
         return Ok("Tasks have been distributed.");
     }
+
+    [HttpPost("trigger-log")]
+    public IActionResult TriggerLog()
+    {
+        _taskDistributionService.DistributeTasksAsync().Wait();
+        return Ok("Log tetiklendi.");
+    }
 }
 
