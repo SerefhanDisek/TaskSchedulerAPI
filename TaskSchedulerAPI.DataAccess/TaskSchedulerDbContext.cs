@@ -15,16 +15,21 @@ namespace TaskSchedulerAPI.DataAccess
         public DbSet<Tasks> Tasks { get; set; } 
         public DbSet<UserTask> UserTasks { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Roles> Roles { get; set; }
         public DbSet<SystemSettings> SystemSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+             modelBuilder.Entity<User>()
+                .HasOne(u => u.Roles)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.Id)
+                .IsRequired();
 
             modelBuilder.Entity<UserTask>()
                 .HasKey(ut => new { ut.UserId, ut.TaskId });
-
 
             modelBuilder.Entity<UserTask>()
                 .HasOne(ut => ut.User)
