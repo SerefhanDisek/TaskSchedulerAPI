@@ -79,6 +79,27 @@ namespace TaskSchedulerAPI.DataAccess.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.Roles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.SystemSettings", b =>
                 {
                     b.Property<int>("Id")
@@ -139,18 +160,18 @@ namespace TaskSchedulerAPI.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 28, 12, 32, 49, 58, DateTimeKind.Utc).AddTicks(771),
+                            CreatedAt = new DateTime(2024, 10, 9, 4, 20, 38, 510, DateTimeKind.Utc).AddTicks(1328),
                             Description = "Complete the first task",
-                            DueDate = new DateTime(2024, 9, 4, 12, 32, 49, 58, DateTimeKind.Utc).AddTicks(764),
+                            DueDate = new DateTime(2024, 10, 16, 4, 20, 38, 510, DateTimeKind.Utc).AddTicks(1320),
                             IsCompleted = false,
                             Name = "Task 1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 8, 28, 12, 32, 49, 58, DateTimeKind.Utc).AddTicks(773),
+                            CreatedAt = new DateTime(2024, 10, 9, 4, 20, 38, 510, DateTimeKind.Utc).AddTicks(1330),
                             Description = "Start the second task",
-                            DueDate = new DateTime(2024, 9, 11, 12, 32, 49, 58, DateTimeKind.Utc).AddTicks(772),
+                            DueDate = new DateTime(2024, 10, 23, 4, 20, 38, 510, DateTimeKind.Utc).AddTicks(1329),
                             IsCompleted = false,
                             Name = "Task 2"
                         });
@@ -159,10 +180,7 @@ namespace TaskSchedulerAPI.DataAccess.Migrations
             modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -246,6 +264,17 @@ namespace TaskSchedulerAPI.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.User", b =>
+                {
+                    b.HasOne("TaskSchedulerAPI.Core.Entities.Roles", "Roles")
+                        .WithMany("Users")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
+                });
+
             modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.UserTask", b =>
                 {
                     b.HasOne("TaskSchedulerAPI.Core.Entities.Tasks", "Tasks")
@@ -263,6 +292,11 @@ namespace TaskSchedulerAPI.DataAccess.Migrations
                     b.Navigation("Tasks");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.Roles", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TaskSchedulerAPI.Core.Entities.Tasks", b =>

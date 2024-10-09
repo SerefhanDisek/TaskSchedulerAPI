@@ -12,7 +12,7 @@ namespace TaskSchedulerAPI.DataAccess
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Tasks> Tasks { get; set; } 
+        public DbSet<Tasks> Tasks { get; set; }
         public DbSet<UserTask> UserTasks { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Roles> Roles { get; set; }
@@ -22,11 +22,11 @@ namespace TaskSchedulerAPI.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-             modelBuilder.Entity<User>()
+           /* modelBuilder.Entity<User>()//buraya bak
                 .HasOne(u => u.Roles)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.Id)
-                .IsRequired();
+                .IsRequired();*/
 
             modelBuilder.Entity<UserTask>()
                 .HasKey(ut => new { ut.UserId, ut.TaskId });

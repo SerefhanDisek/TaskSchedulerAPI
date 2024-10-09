@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TaskSchedulerAPI.Core.Entities
 {
-    public class Roles
+    public class Roles//   sıkıntı burda roles tablosu db de oluşturlmamış\oluşturulamıyor
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<User> Users { get; set; }
+        //public ICollection<User> Users { get; set; }
     }
 }
