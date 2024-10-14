@@ -22,7 +22,7 @@ namespace TaskSchedulerAPI.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-           /* modelBuilder.Entity<User>()//buraya bak
+           /* modelBuilder.Entity<User>()//buraya bak 
                 .HasOne(u => u.Roles)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.Id)

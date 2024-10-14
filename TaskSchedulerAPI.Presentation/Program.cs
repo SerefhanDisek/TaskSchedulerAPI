@@ -22,12 +22,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")  
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
 
 builder.Services.AddControllers(options =>
@@ -131,6 +132,9 @@ if (app.Environment.IsDevelopment())
         c.InjectJavascript("/swagger/custom.js"); 
     });
 }
+
+app.UseCors("AllowAllOrigins");
+
 app.UseStaticFiles();
 
 app.UseRouting();
