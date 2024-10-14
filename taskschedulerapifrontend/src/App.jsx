@@ -1,31 +1,20 @@
-import axios from 'axios';
-import { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Register from './components/Register'; // Kayýt bileþeni
+import Login from './components/Login'; // Giriþ bileþeni
 
 const App = () => {
-    const [tasks, setTasks] = useState([]);
-    const [error, setError] = useState(null);
-
-    const fetchTasks = async () => {
-        try {
-            const response = await axios.get('http://localhost:7184/api/tasks'); // API adresini güncelleyin
-            setTasks(response.data);
-            setError(null); // Baþarýlý bir çaðrýdan sonra hatayý sýfýrla
-        } catch (error) {
-            setError("Veri çekme hatasý: " + error.message);
-            console.error(error);
-        }
-    };
-
     return (
-        <div>
-            <button onClick={fetchTasks}>Görevleri Getir</button>
-            {error && <p>{error}</p>}
-            <ul>
-                {tasks.map(task => (
-                    <li key={task.id}>{task.title}</li>
-                ))}
-            </ul>
-        </div>
+        <Router>
+            <Switch>
+                <Route path="/register" component={Register} />
+                <Route path="/login" component={Login} />
+                <Route path="/" exact>
+                    <h1>Ana Sayfa</h1>
+                </Route>
+                {/* Diðer rotalarýnýz buraya eklenebilir */}
+            </Switch>
+        </Router>
     );
 };
 
