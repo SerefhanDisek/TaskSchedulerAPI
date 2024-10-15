@@ -18,7 +18,7 @@ const Register = () => {
 
     return (
         <div>
-            <h1>Kayıt Ol</h1>
+            <h1>Kayit Ol</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"

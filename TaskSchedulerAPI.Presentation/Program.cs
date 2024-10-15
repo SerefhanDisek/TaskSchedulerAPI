@@ -143,11 +143,11 @@ app.UseHttpsRedirection();
 
 app.UseHangfireDashboard("/hangfire");
 
-RecurringJob.AddOrUpdate<ITaskDistributionService>(
+/*RecurringJob.AddOrUpdate<ITaskDistributionService>(
     "task-distribution-job",
     service => service.DistributeTasksAsync(),
     Cron.Daily(8, 0)
-);
+);*/ //SQL hatasý verdiði için bir süreliðine projeden çýkartýldý
 
 app.UseMiddleware<AuthenticationMiddleware>();
 
