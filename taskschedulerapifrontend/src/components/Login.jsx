@@ -1,34 +1,41 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
 
-    const handleLogin = async (e) => {
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:7184/api/auth/login', {
-                username,
-                password,
-            });
-            // Tokeni kaydedin ve yönlendirin
-            localStorage.setItem('token', response.data);
-            // Giriþ sonrasý yönlendirme veya mesaj gösterimi
-        } catch (error) {
-            setError("Giriþ hatasý: " + error.message);
-            console.error(error);
-        }
+        console.log('Giris formu gonderildi:', formData);
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Kullanýcý Adý" required />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Parola" required />
-            <button type="submit">Giriþ Yap</button>
-            {error && <p>{error}</p>}
-        </form>
+        <div>
+            <h1>Giris Yap</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Kullanici Adi"
+                    value={formData.username}
+                    onChange={handleChange}
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Sifre"
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+                <button type="submit">Giris Yap</button>
+            </form>
+        </div>
     );
 };
 

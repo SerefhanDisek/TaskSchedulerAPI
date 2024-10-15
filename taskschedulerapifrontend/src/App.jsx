@@ -1,19 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Register from './components/Register'; // Kayýt bileþeni
-import Login from './components/Login'; // Giriþ bileþeni
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import './App.css';  // Stil dosyasýný import ediyoruz
 
 const App = () => {
     return (
         <Router>
-            <Switch>
-                <Route path="/register" component={Register} />
-                <Route path="/login" component={Login} />
-                <Route path="/" exact>
-                    <h1>Ana Sayfa</h1>
-                </Route>
-                {/* Diðer rotalarýnýz buraya eklenebilir */}
-            </Switch>
+            <nav>
+                <Link to="/">Ana Sayfa</Link>
+                <Link to="/register">Kayit Ol</Link>
+                <Link to="/login">Giris Yap</Link>
+            </nav>
+            <div className="container">
+                <Routes>
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </div>
         </Router>
     );
 };

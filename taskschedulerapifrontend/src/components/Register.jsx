@@ -1,35 +1,49 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 const Register = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: ''
+    });
 
-    const handleRegister = async (e) => {
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            await axios.post('http://localhost:7184/api/auth/register', {
-                username,
-                password,
-                email,
-            });
-            // Baþarýlý kayýt sonrasý yönlendirme veya mesaj gösterimi
-        } catch (error) {
-            setError("Kayýt hatasý: " + error.message);
-            console.error(error);
-        }
+        console.log('Kayit formu gonderildi:', formData);
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Kullanýcý Adý" required />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Parola" required />
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-            <button type="submit">Kayýt Ol</button>
-            {error && <p>{error}</p>}
-        </form>
+        <div>
+            <h1>Kayýt Ol</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Kullanici Adi"
+                    value={formData.username}
+                    onChange={handleChange}
+                />
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Sifre"
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+                <button type="submit">Kayit Ol</button>
+            </form>
+        </div>
     );
 };
 
