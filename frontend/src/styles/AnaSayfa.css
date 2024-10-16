@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.title {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #4CAF50;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Butonlar arasýndaki boþluðu ayarlar */
+}
+
+.btn {
+    width: 200px; /* Buton geniþliðini ayarlar */
+    background-color: #4CAF50; /* Buton arka plan rengi */
+    color: white; /* Yazý rengi */
+    border: none; /* Kenarlýk yok */
+    border-radius: 5px; /* Kenar yuvarlama */
+    padding: 15px; /* Ýç boþluk */
+    cursor: pointer; /* Fareyi üzerine getirdiðinizde imleci gösterir */
+    transition: background-color 0.3s; /* Geçiþ efekti */
+}
+
+    .btn:hover {
+        background-color: #45a049; /* Hover rengi */
+    }

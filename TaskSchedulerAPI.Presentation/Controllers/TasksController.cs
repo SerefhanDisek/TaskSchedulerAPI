@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskSchedulerAPI.Core.DTOs;
+using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;
 
@@ -42,6 +43,18 @@ namespace TaskSchedulerAPI.Presentation.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateTaskAssignment(int taskId, int userId)
+        {
+            var result = await _taskService.UpdateTaskAssignmentAsync(taskId, userId);
+            if (!result)
+            {
+                return BadRequest("Task assignment could not be updated.");
+            }
+
+            return Ok("Task assignment updated successfully.");
         }
 
         [HttpPut("{id}")]

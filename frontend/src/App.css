@@ -1,0 +1,35 @@
+.App {
+    text-align: center;
+}
+
+.navbar {
+    background-color: #282c34;
+    padding: 10px;
+}
+
+    .navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .navbar li {
+        margin: 0 15px;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+    }
+
+.button-container {
+    margin-top: 50px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}

@@ -93,5 +93,22 @@ namespace TaskSchedulerAPI.Business.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> UpdateTaskAssignmentAsync(int taskId, int userId)
+        {
+            var task = await _taskRepository.GetByIdAsync(taskId);
+
+            if (task == null)
+            {
+                return false; 
+            }
+
+            task.AssignedUserId = userId; 
+
+            await _taskRepository.UpdateAsync(task); 
+
+            return true; 
+        }
+
+
     }
 }
