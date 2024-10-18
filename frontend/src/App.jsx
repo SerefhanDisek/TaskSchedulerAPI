@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import "./App.css"; // Import your CSS file here 
-import RegisterPage from "./components/RegisterPage"; // Import Register page
-import LoginPage from "./components/LoginPage"; // Import Login page
+import "./App.css"; 
+import RegisterPage from "./components/RegisterPage"; 
+import LoginPage from "./components/LoginPage"; 
 
 function App() {
     const [tasks, setTasks] = useState([]);
@@ -77,99 +77,109 @@ function App() {
                 </nav>
             </header>
 
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <main>
-                            <div className="task-form">
-                                <input
-                                    type="text"
-                                    id="task"
-                                    placeholder="Enter task..."
-                                    value={task}
-                                    onChange={handleTaskChange}
-                                />
-                                <select
-                                    id="priority"
-                                    value={priority}
-                                    onChange={handlePriorityChange}
-                                >
-                                    <option value="top">Top Priority</option>
-                                    <option value="middle">Middle Priority</option>
-                                    <option value="low">Less Priority</option>
-                                </select>
-                                <input
-                                    type="date"
-                                    id="deadline"
-                                    value={deadline}
-                                    onChange={handleDeadlineChange}
-                                />
-                                <button id="add-task" onClick={addTask}>
-                                    Add Task
-                                </button>
-                            </div>
+            <div className="layout">
+                <h3></h3>
+                <aside className="sidebar">
+                    <Link to="/users" className="nav-link">Kullanicilar</Link>
+                    <Link to="/tasks" className="nav-link">Gorevler</Link>
+                    <Link to="/task-distribution" className="nav-link">Gorev Dagitimi</Link>
+                    <Link to="/task-planning" className="nav-link">Gorev Planlama</Link>
+                </aside>
 
-                            <h2 className="heading">Upcoming Tasks</h2>
-                            <div className="task-list" id="task-list">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Task Name</th>
-                                            <th>Priority</th>
-                                            <th>Deadline</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {upcomingTasks.map((t) => (
-                                            <tr key={t.id}>
-                                                <td>{t.task}</td>
-                                                <td>{t.priority}</td>
-                                                <td>{t.deadline}</td>
-                                                <td>
-                                                    {!t.done && (
-                                                        <button
-                                                            className="mark-done"
-                                                            onClick={() => markDone(t.id)}
-                                                        >
-                                                            Mark Done
-                                                        </button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <main>
+                                <div className="task-form">
+                                    <input
+                                        type="text"
+                                        id="task"
+                                        placeholder="Enter task..."
+                                        value={task}
+                                        onChange={handleTaskChange}
+                                    />
+                                    <select
+                                        id="priority"
+                                        value={priority}
+                                        onChange={handlePriorityChange}
+                                    >
+                                        <option value="top">Top Priority</option>
+                                        <option value="middle">Middle Priority</option>
+                                        <option value="low">Less Priority</option>
+                                    </select>
+                                    <input
+                                        type="date"
+                                        id="deadline"
+                                        value={deadline}
+                                        onChange={handleDeadlineChange}
+                                    />
+                                    <button id="add-task" onClick={addTask}>
+                                        Add Task
+                                    </button>
+                                </div>
 
-                            <div className="completed-task-list">
-                                <h2 className="cheading">Completed Tasks</h2>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Task Name</th>
-                                            <th>Priority</th>
-                                            <th>Deadline</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {completedTasks.map((ct) => (
-                                            <tr key={ct.id}>
-                                                <td>{ct.task}</td>
-                                                <td>{ct.priority}</td>
-                                                <td>{ct.deadline}</td>
+                                <h2 className="heading">Upcoming Tasks</h2>
+                                <div className="task-list" id="task-list">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gorev Adi</th>
+                                                <th>Oncelik</th>
+                                                <th>Teslim Tarihi</th>
+                                                <th>Durum</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </main>
-                    }
-                />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
-            </Routes>
+                                        </thead>
+                                        <tbody>
+                                            {upcomingTasks.map((t) => (
+                                                <tr key={t.id}>
+                                                    <td>{t.task}</td>
+                                                    <td>{t.priority}</td>
+                                                    <td>{t.deadline}</td>
+                                                    <td>
+                                                        {!t.done && (
+                                                            <button
+                                                                className="mark-done"
+                                                                onClick={() => markDone(t.id)}
+                                                            >
+                                                                Tamamla
+                                                            </button>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="completed-task-list">
+                                    <h2 className="cheading">Tamamlanis Tasks</h2>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Gorev Adi</th>
+                                                <th>Oncelik</th>
+                                                <th>Teslim Tarihi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {completedTasks.map((ct) => (
+                                                <tr key={ct.id}>
+                                                    <td>{ct.task}</td>
+                                                    <td>{ct.priority}</td>
+                                                    <td>{ct.deadline}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </main>
+                        }
+                    />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                </Routes>
+            </div>
         </Router>
     );
 }

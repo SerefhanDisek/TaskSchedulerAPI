@@ -1,31 +1,37 @@
-import { useState } from "react";
+import { useState } from 'react';
+import '../styles/LoginPage.css';
 
-function LoginPage() {
-    const [credentials, setCredentials] = useState({
-        email: '',
-        password: ''
-    });
+const LoginPage = () => {
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleChange = (e) => {
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        console.log(credentials);
-        // Backend API'ye istek gönderebilirsiniz
+        // Login iþlemleri burada gerçekleþtirilecek
     };
 
     return (
-        <div>
-            <h2>Giriþ Yap</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" value={credentials.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange} required />
-                <button type="submit">Giriþ Yap</button>
+        <div className="login-container">
+            <form className="login-form" onSubmit={handleLogin}>
+                <h2>Login</h2>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button type="submit">Login</button>
             </form>
         </div>
     );
-}
+};
 
 export default LoginPage;

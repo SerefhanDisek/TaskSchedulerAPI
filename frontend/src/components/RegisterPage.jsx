@@ -1,37 +1,61 @@
-import { useState } from "react";
+import { useState } from 'react';
+import '../styles/RegisterPage.css';
 
-function RegisterPage() {
-    const [form, setForm] = useState({
-        firstName: '',
-        lastName: '',
-        userName: '',
-        email: '',
-        password: ''
-    });
+const RegisterPage = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        console.log(form);
-        // Backend API'ye istek gönderebilirsiniz
+        // Register iþlemleri burada gerçekleþtirilecek
     };
 
     return (
-        <div>
-            <h2>Kayýt Ol</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} required />
-                <input type="text" name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} required />
-                <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-                <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-                <button type="submit">Kayýt Ol</button>
+        <div className="register-container">
+            <form className="register-form" onSubmit={handleRegister}>
+                <h2>Register</h2>
+                <input
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button type="submit">Register</button>
             </form>
         </div>
     );
-}
+};
 
 export default RegisterPage;
