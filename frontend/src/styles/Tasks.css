@@ -1,65 +1,85 @@
-/* Tasks.css */
+/* Genel Stil */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Arka plan rengi */
-    margin: 0;
-    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
 }
 
 h2 {
-    text-align: center;
-    color: #333; /* Baþlýk rengi */
+    font-size: 1.5rem;
+    color: #FF7F00;
+    margin-bottom: 15px;
 }
 
 h3 {
-    color: #555; /* Alt baþlýk rengi */
+    font-size: 1.2rem;
+    color: #FF7F00;
+    margin: 15px 0;
 }
 
+/* Görevler Listesi */
 ul {
-    list-style-type: none; /* Madde iþaretlerini kaldýr */
-    padding: 0; /* Ýç boþluklarý sýfýrla */
-    margin: 20px; /* Dýþ boþluk ekle */
+    list-style-type: none;
+    padding: 0;
 }
 
 li {
-    background-color: #ffffff; /* Görevlerin arka plan rengi */
-    margin: 10px 0; /* Dýþ boþluk */
-    padding: 10px; /* Ýç boþluk */
-    border: 1px solid #ddd; /* Kenar rengi */
-    border-radius: 5px; /* Kenar yuvarlama */
-    display: flex; /* Flexbox düzeni */
-    justify-content: space-between; /* Elemanlar arasýnda boþluk býrak */
-    align-items: center; /* Dikey hizalama */
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff; /* Görev kutusu arka plan rengi */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
 }
 
+/* Butonlar */
 button {
-    background-color: #007bff; /* Buton rengi */
-    color: white; /* Buton yazý rengi */
-    border: none; /* Kenarlarý kaldýr */
-    border-radius: 4px; /* Kenar yuvarlama */
-    padding: 5px 10px; /* Ýç boþluk */
-    cursor: pointer; /* Ýmleci el iþareti yap */
-    transition: background-color 0.3s; /* Geçiþ efekti */
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background-color: white; /* Ana buton arka plan rengi */
+    color: #FF7F00;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Buton geçiþ efekti */
+    font-size: 16px;
 }
 
     button:hover {
-        background-color: #0056b3; /* Üzerine gelindiðinde buton rengi deðiþimi */
+        background-color: grey; /* Hover rengi */
     }
 
-input, textarea {
-    width: 100%; /* Geniþliði %100 yap */
-    padding: 10px; /* Ýç boþluk */
-    margin: 10px 0; /* Dýþ boþluk */
-    border: 1px solid #ccc; /* Kenar rengi */
-    border-radius: 4px; /* Kenar yuvarlama */
-    font-size: 16px; /* Yazý boyutu */
+/* Form Alanlarý */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box; /* Padding ve border alanlarý dahil */
 }
 
-textarea {
-    resize: vertical; /* Sadece dikey boyutlandýrmaya izin ver */
+/* Hata Mesajý */
+.error {
+    color: red;
+    margin-top: 10px;
 }
 
-div {
-    margin: 20px; /* Dýþ boþluk ekle */
+/* Task Formu */
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
 }

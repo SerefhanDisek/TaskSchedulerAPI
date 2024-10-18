@@ -85,7 +85,7 @@ function App() {
                                     <input
                                         type="text"
                                         id="task"
-                                        placeholder="Gorev girin..."
+                                        placeholder="Grev girin..."
                                         value={task}
                                         onChange={handleTaskChange}
                                     />

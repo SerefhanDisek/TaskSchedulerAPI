@@ -1,121 +1,144 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import "../styles/Tasks.css";
+import { useState } from "react";
+import "../styles/Tasks.css"; // Ýsterseniz stilleri ekleyebilirsiniz
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
-    const [newTask, setNewTask] = useState({ title: "", description: "" });
-    const [selectedTask, setSelectedTask] = useState(null); // Güncellenecek görev
+    const [task, setTask] = useState("");
+    const [priority, setPriority] = useState("top");
+    const [deadline, setDeadline] = useState("");
+    const [editingTaskId, setEditingTaskId] = useState(null);
 
-    const apiUrl = "https://your-api-url/api/Tasks"; // API URL'nizi buraya ekleyin
-    const token = localStorage.getItem("token"); // Auth token
+    const handleTaskChange = (e) => setTask(e.target.value);
+    const handlePriorityChange = (e) => setPriority(e.target.value);
+    const handleDeadlineChange = (e) => setDeadline(e.target.value);
 
-    // Tüm görevleri getirme
-    const fetchTasks = async () => {
-        try {
-            const response = await axios.get(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setTasks(response.data);
-        } catch (error) {
-            console.error("Gorevler alinamadi:", error);
+    const addTask = () => {
+        if (task.trim() === "" || deadline === "") {
+            alert("Lutfen bir gorev girin ve gecerli bir teslim tarihi secin.");
+            return;
         }
+
+        const selectedDate = new Date(deadline);
+        const currentDate = new Date();
+
+        if (selectedDate <= currentDate) {
+            alert("Lutfen gelecekte bir tarih secin.");
+            return;
+        }
+
+        const newTask = {
+            id: tasks.length + 1,
+            task,
+            priority,
+            deadline,
+            done: false,
+        };
+
+        if (editingTaskId) {
+            // Güncelleme iþlemi
+            const updatedTasks = tasks.map((t) =>
+                t.id === editingTaskId ? { ...t, task, priority, deadline } : t
+            );
+            setTasks(updatedTasks);
+            setEditingTaskId(null);
+        } else {
+            // Yeni görev ekleme
+            setTasks([...tasks, newTask]);
+        }
+
+        // Girdi alanlarýný sýfýrlama
+        setTask("");
+        setPriority("top");
+        setDeadline("");
     };
 
-    // Yeni görev ekleme
-    const createTask = async () => {
-        try {
-            await axios.post(apiUrl, newTask, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            fetchTasks(); // Yeni görev eklendikten sonra listeyi yenile
-        } catch (error) {
-            console.error("Gorev eklenemedi:", error);
-        }
+    const markDone = (id) => {
+        const updatedTasks = tasks.map((t) => t.id === id ? { ...t, done: true } : t);
+        setTasks(updatedTasks);
     };
 
-    // Görev silme
-    const deleteTask = async (taskId) => {
-        try {
-            await axios.delete(`${apiUrl}/${taskId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            fetchTasks(); // Silindikten sonra listeyi yenile
-        } catch (error) {
-            console.error("Gorev silinemedi:", error);
-        }
+    const editTask = (taskToEdit) => {
+        setTask(taskToEdit.task);
+        setPriority(taskToEdit.priority);
+        setDeadline(taskToEdit.deadline);
+        setEditingTaskId(taskToEdit.id);
     };
 
-    // Görev güncelleme
-    const updateTask = async () => {
-        try {
-            await axios.put(`${apiUrl}/${selectedTask.id}`, selectedTask, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            fetchTasks(); // Güncelleme sonrasý listeyi yenile
-            setSelectedTask(null); // Güncelleme bittiðinde formu temizle
-        } catch (error) {
-            console.error("Gorev güncellenemedi:", error);
-        }
+    const deleteTask = (id) => {
+        const updatedTasks = tasks.filter((t) => t.id !== id);
+        setTasks(updatedTasks);
     };
-
-    useEffect(() => {
-        fetchTasks(); // Sayfa yüklendiðinde görevleri çek
-    }, []);
 
     return (
-        <div>
-            <h2>Gorevler Listesi</h2>
-            <ul>
-                {tasks.map((task) => (
-                    <li key={task.id}>
-                        <strong>{task.title}</strong> - {task.description}
-                        <button onClick={() => deleteTask(task.id)}>Sil</button>
-                        <button onClick={() => setSelectedTask(task)}>Guncelle</button>
-                    </li>
-                ))}
-            </ul>
+        <main>
+            <h2 className="heading">{editingTaskId ? "Gorevi Guncelle" : "Gorev Ekle"}</h2>
+            <div className="task-form">
+                <input
+                    type="text"
+                    id="task"
+                    placeholder="Gorev girin..."
+                    value={task}
+                    onChange={handleTaskChange}
+                />
+                <select
+                    id="priority"
+                    value={priority}
+                    onChange={handlePriorityChange}
+                >
+                    <option value="top">Oncelikli</option>
+                    <option value="middle">Orta Oncelik</option>
+                    <option value="low">Az Oncelikli</option>
+                </select>
+                <input
+                    type="date"
+                    id="deadline"
+                    value={deadline}
+                    onChange={handleDeadlineChange}
+                />
+                <button id="add-task" onClick={addTask}>
+                    {editingTaskId ? "Guncelle" : "Ekle"}
+                </button>
+            </div>
 
-            <h3>Yeni Gorev Ekle</h3>
-            <input
-                type="text"
-                value={newTask.title}
-                placeholder="Gorev Basligi"
-                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            />
-            <textarea
-                value={newTask.description}
-                placeholder="Gorev Aciklamasi"
-                onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-            />
-            <button onClick={createTask}>Ekle</button>
-
-            {selectedTask && (
-                <div>
-                    <h3>Gorev Guncelle</h3>
-                    <input
-                        type="text"
-                        value={selectedTask.title}
-                        onChange={(e) => setSelectedTask({ ...selectedTask, title: e.target.value })}
-                    />
-                    <textarea
-                        value={selectedTask.description}
-                        onChange={(e) => setSelectedTask({ ...selectedTask, description: e.target.value })}
-                    />
-                    <button onClick={updateTask}>Guncelle</button>
-                </div>
-            )}
-        </div>
+            <h2 className="heading">Aktif Gorevler</h2>
+            <div className="task-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gorev Adi</th>
+                            <th>Oncelik</th>
+                            <th>Teslim Tarihi</th>
+                            <th>Durum</th>
+                            <th>Islemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasks.filter(t => !t.done).map((t) => (
+                            <tr key={t.id}>
+                                <td>{t.task}</td>
+                                <td>{t.priority}</td>
+                                <td>{t.deadline}</td>
+                                <td>
+                                    {!t.done && (
+                                        <button onClick={() => markDone(t.id)}>
+                                            Tamamla
+                                        </button>
+                                    )}
+                                </td>
+                                <td>
+                                    <button onClick={() => editTask(t)}>
+                                        Duzenle
+                                    </button>
+                                    <button onClick={() => deleteTask(t.id)}>
+                                        Sil
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </main>
     );
 };
 
