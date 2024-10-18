@@ -10,11 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "devextreme": "^24.1.6",
-    "devextreme-react": "^24.1.6",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

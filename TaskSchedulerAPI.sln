@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskSchedulerAPI.DataAccess
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskSchedulerAPI.Presentation", "TaskSchedulerAPI.Presentation\TaskSchedulerAPI.Presentation.csproj", "{BB905A51-8C71-47B9-9615-0BFDDA4CFDA7}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "Frontend\frontend.esproj", "{C488B12A-E3F2-4A8C-8527-EF663FE29438}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "frontend\frontend.esproj", "{A80ADBF6-E161-4207-8C2A-CB915765FDD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +35,12 @@ Global
 		{BB905A51-8C71-47B9-9615-0BFDDA4CFDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB905A51-8C71-47B9-9615-0BFDDA4CFDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB905A51-8C71-47B9-9615-0BFDDA4CFDA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C488B12A-E3F2-4A8C-8527-EF663FE29438}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80ADBF6-E161-4207-8C2A-CB915765FDD4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
