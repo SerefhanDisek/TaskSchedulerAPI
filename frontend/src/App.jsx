@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import "./App.css"; 
-import RegisterPage from "./components/RegisterPage"; 
-import LoginPage from "./components/LoginPage"; 
+import "./App.css";
+import RegisterPage from "./components/RegisterPage";
+import LoginPage from "./components/LoginPage";
+import TaskScheduler from "./components/TaskScheduler";
+import Tasks from "./components/Tasks"; 
 
 function App() {
     const [tasks, setTasks] = useState([]);
@@ -11,17 +13,9 @@ function App() {
     const [priority, setPriority] = useState("top");
     const [deadline, setDeadline] = useState("");
 
-    const handleTaskChange = (e) => {
-        setTask(e.target.value);
-    };
-
-    const handlePriorityChange = (e) => {
-        setPriority(e.target.value);
-    };
-
-    const handleDeadlineChange = (e) => {
-        setDeadline(e.target.value);
-    };
+    const handleTaskChange = (e) => setTask(e.target.value);
+    const handlePriorityChange = (e) => setPriority(e.target.value);
+    const handleDeadlineChange = (e) => setDeadline(e.target.value);
 
     const addTask = () => {
         if (task.trim() === "" || deadline === "") {
@@ -46,16 +40,13 @@ function App() {
         };
 
         setTasks([...tasks, newTask]);
-
         setTask("");
         setPriority("top");
         setDeadline("");
     };
 
     const markDone = (id) => {
-        const updatedTasks = tasks.map((t) =>
-            t.id === id ? { ...t, done: true } : t
-        );
+        const updatedTasks = tasks.map((t) => t.id === id ? { ...t, done: true } : t);
         setTasks(updatedTasks);
 
         const completedTask = tasks.find((t) => t.id === id);
@@ -69,16 +60,15 @@ function App() {
     return (
         <Router>
             <header>
-                <h1>Gorev Yonetimi</h1>
+                <h1>Gorev Planlama</h1>
                 <nav className="nav-bar">
-                    <Link to="/" className="nav-link">Ana sayfa</Link>
-                    <Link to="/register" className="nav-link">Register</Link>
-                    <Link to="/login" className="nav-link">Login</Link>
+                    <Link to="/" className="nav-link">Ana Sayfa</Link>
+                    <Link to="/register" className="nav-link">Kayit Ol</Link>
+                    <Link to="/login" className="nav-link">Giris Yap</Link>
                 </nav>
             </header>
 
             <div className="layout">
-                <h3></h3>
                 <aside className="sidebar">
                     <Link to="/users" className="nav-link">Kullanicilar</Link>
                     <Link to="/tasks" className="nav-link">Gorevler</Link>
@@ -95,7 +85,7 @@ function App() {
                                     <input
                                         type="text"
                                         id="task"
-                                        placeholder="Enter task..."
+                                        placeholder="Gorev girin..."
                                         value={task}
                                         onChange={handleTaskChange}
                                     />
@@ -104,9 +94,9 @@ function App() {
                                         value={priority}
                                         onChange={handlePriorityChange}
                                     >
-                                        <option value="top">Top Priority</option>
-                                        <option value="middle">Middle Priority</option>
-                                        <option value="low">Less Priority</option>
+                                        <option value="top">Oncelikli</option>
+                                        <option value="middle">Orta Oncelik</option>
+                                        <option value="low">Az Oncelikli</option>
                                     </select>
                                     <input
                                         type="date"
@@ -115,11 +105,11 @@ function App() {
                                         onChange={handleDeadlineChange}
                                     />
                                     <button id="add-task" onClick={addTask}>
-                                        Add Task
+                                        Ekle
                                     </button>
                                 </div>
 
-                                <h2 className="heading">Upcoming Tasks</h2>
+                                <h2 className="heading">Aktif Gorevler</h2>
                                 <div className="task-list" id="task-list">
                                     <table>
                                         <thead>
@@ -153,7 +143,7 @@ function App() {
                                 </div>
 
                                 <div className="completed-task-list">
-                                    <h2 className="cheading">Tamamlanis Tasks</h2>
+                                    <h2 className="cheading">Tamamlanmis Gorevler</h2>
                                     <table>
                                         <thead>
                                             <tr>
@@ -178,6 +168,8 @@ function App() {
                     />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/task-planning" element={<TaskScheduler />} />
+                    <Route path="/tasks" element={<Tasks />} /> {/* Görevler sayfasý */}
                 </Routes>
             </div>
         </Router>

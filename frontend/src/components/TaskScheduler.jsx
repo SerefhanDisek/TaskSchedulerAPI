@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import "../styles/TaskScheduler.css"; // Import your CSS file here 
-import RegisterPage from "./components/RegisterPage"; // Import Register page
-import LoginPage from "./components/LoginPage"; // Import Login page
+import "../styles/TaskScheduler.css";
 
-function App() {
+function TaskScheduler() {
     const [tasks, setTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
     const [task, setTask] = useState("");
@@ -67,111 +64,91 @@ function App() {
     const upcomingTasks = tasks.filter((t) => !t.done);
 
     return (
-        <Router>
-            <header>
-                <h1>Gorev Yonetimi</h1>
-                <nav className="nav-bar">
-                    <Link to="/" className="nav-link">Ana sayfa</Link>
-                    <Link to="/register" className="nav-link">Register</Link>
-                    <Link to="/login" className="nav-link">Login</Link>
-                </nav>
-            </header>
-
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <main>
-                            <div className="task-form">
-                                <input
-                                    type="text"
-                                    id="task"
-                                    placeholder="Enter task..."
-                                    value={task}
-                                    onChange={handleTaskChange}
-                                />
-                                <select
-                                    id="priority"
-                                    value={priority}
-                                    onChange={handlePriorityChange}
-                                >
-                                    <option value="top">Top Priority</option>
-                                    <option value="middle">Middle Priority</option>
-                                    <option value="low">Less Priority</option>
-                                </select>
-                                <input
-                                    type="date"
-                                    id="deadline"
-                                    value={deadline}
-                                    onChange={handleDeadlineChange}
-                                />
-                                <button id="add-task" onClick={addTask}>
-                                    Add Task
-                                </button>
-                            </div>
-
-                            <h2 className="heading">Upcoming Tasks</h2>
-                            <div className="task-list" id="task-list">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Gorev Adi</th>
-                                            <th>Oncelik</th>
-                                            <th>Teslim Tarihi</th>
-                                            <th>Durum</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {upcomingTasks.map((t) => (
-                                            <tr key={t.id}>
-                                                <td>{t.task}</td>
-                                                <td>{t.priority}</td>
-                                                <td>{t.deadline}</td>
-                                                <td>
-                                                    {!t.done && (
-                                                        <button
-                                                            className="mark-done"
-                                                            onClick={() => markDone(t.id)}
-                                                        >
-                                                            Tamamla
-                                                        </button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div className="completed-task-list">
-                                <h2 className="cheading">Tamamlanis Gorevler</h2>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Gorev Adi</th>
-                                            <th>Oncelik</th>
-                                            <th>Teslim Tarihi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {completedTasks.map((ct) => (
-                                            <tr key={ct.id}>
-                                                <td>{ct.task}</td>
-                                                <td>{ct.priority}</td>
-                                                <td>{ct.deadline}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </main>
-                    }
+        <main>
+            <div className="task-form">
+                <input
+                    type="text"
+                    id="task"
+                    placeholder="Enter task..."
+                    value={task}
+                    onChange={handleTaskChange}
                 />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
-            </Routes>
-        </Router>
+                <select
+                    id="priority"
+                    value={priority}
+                    onChange={handlePriorityChange}
+                >
+                    <option value="top">Top Priority</option>
+                    <option value="middle">Middle Priority</option>
+                    <option value="low">Less Priority</option>
+                </select>
+                <input
+                    type="date"
+                    id="deadline"
+                    value={deadline}
+                    onChange={handleDeadlineChange}
+                />
+                <button id="add-task" onClick={addTask}>
+                    Ekle
+                </button>
+            </div>
+
+            <h2 className="heading">Aktif Gorevler</h2>
+            <div className="task-list" id="task-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gorev Adi</th>
+                            <th>Oncelik</th>
+                            <th>Teslim Tarihi</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {upcomingTasks.map((t) => (
+                            <tr key={t.id}>
+                                <td>{t.task}</td>
+                                <td>{t.priority}</td>
+                                <td>{t.deadline}</td>
+                                <td>
+                                    {!t.done && (
+                                        <button
+                                            className="mark-done"
+                                            onClick={() => markDone(t.id)}
+                                        >
+                                            Tamamla
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="completed-task-list">
+                <h2 className="cheading">Tamamlanmis Gorevler</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gorev Adi</th>
+                            <th>Oncelik</th>
+                            <th>Teslim Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {completedTasks.map((ct) => (
+                            <tr key={ct.id}>
+                                <td>{ct.task}</td>
+                                <td>{ct.priority}</td>
+                                <td>{ct.deadline}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </main>
     );
 }
 
-export default App;
+export default TaskScheduler;
