@@ -10,7 +10,6 @@ const RegisterPage = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        // Register iþlemleri burada gerçekleþtirilecek
     };
 
     return (

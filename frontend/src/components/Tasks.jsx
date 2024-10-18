@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/Tasks.css"; // Ýsterseniz stilleri ekleyebilirsiniz
+import "../styles/Tasks.css"; 
 
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -35,18 +35,15 @@ const Tasks = () => {
         };
 
         if (editingTaskId) {
-            // Güncelleme iþlemi
             const updatedTasks = tasks.map((t) =>
                 t.id === editingTaskId ? { ...t, task, priority, deadline } : t
             );
             setTasks(updatedTasks);
             setEditingTaskId(null);
         } else {
-            // Yeni görev ekleme
             setTasks([...tasks, newTask]);
         }
 
-        // Girdi alanlarýný sýfýrlama
         setTask("");
         setPriority("top");
         setDeadline("");

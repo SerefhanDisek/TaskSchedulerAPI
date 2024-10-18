@@ -7,7 +7,6 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Login iþlemleri burada gerçekleþtirilecek
     };
 
     return (

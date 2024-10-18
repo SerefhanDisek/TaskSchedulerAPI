@@ -4,7 +4,8 @@ import "./App.css";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import TaskScheduler from "./components/TaskScheduler";
-import Tasks from "./components/Tasks"; 
+import Tasks from "./components/Tasks";
+import Users from "./components/Users";
 
 function App() {
     const [tasks, setTasks] = useState([]);
@@ -169,7 +170,8 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/task-planning" element={<TaskScheduler />} />
-                    <Route path="/tasks" element={<Tasks />} /> {/* Görevler sayfasý */}
+                    <Route path="/tasks" element={<Tasks />} />
+                    <Route path="/users" element={<Users />} />
                 </Routes>
             </div>
         </Router>

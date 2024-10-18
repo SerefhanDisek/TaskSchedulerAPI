@@ -1,0 +1,35 @@
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+    .user-form input,
+    .user-form select,
+    .user-form button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+.user-list {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    table th,
+    table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #f2f2f2;
+    }
