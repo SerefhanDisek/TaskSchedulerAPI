@@ -15,24 +15,24 @@ const RegisterPage = () => {
     return (
         <div className="register-container">
             <form className="register-form" onSubmit={handleRegister}>
-                <h2>Register</h2>
+                <h2>Kayit Ol</h2>
                 <input
                     type="text"
-                    placeholder="First Name"
+                    placeholder="Isim"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
                 />
                 <input
                     type="text"
-                    placeholder="Last Name"
+                    placeholder="Soy Isim"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
                 />
                 <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Kullanici Adi"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     required
@@ -46,12 +46,12 @@ const RegisterPage = () => {
                 />
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Sifre"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Register</button>
+                <button type="submit">Kayit Ol</button>
             </form>
         </div>
     );
