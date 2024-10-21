@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import "./App.css";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
@@ -9,7 +9,6 @@ import Users from "./components/Users";
 import TaskDistribution from "./components/TaskDistribution";
 
 function App() {
-    // Tek bir tasks tanýmlamasý olmalý
     const [tasks, setTasks] = useState([
         { id: 1, task: "Gorev 1", done: false },
         { id: 2, task: "Gorev 2", done: false }
@@ -83,12 +82,7 @@ function App() {
             </header>
 
             <div className="layout">
-                <aside className="sidebar">
-                    <Link to="/users" className="nav-link">Kullanicilar</Link>
-                    <Link to="/tasks" className="nav-link">Gorevler</Link>
-                    <Link to="/task-distribution" className="nav-link">Gorev Dagitimi</Link>
-                    <Link to="/task-planning" className="nav-link">Gorev Planlama</Link>
-                </aside>
+                <Sidebar />
 
                 <Routes>
                     <Route
@@ -99,7 +93,7 @@ function App() {
                                     <input
                                         type="text"
                                         id="task"
-                                        placeholder="Grev girin..."
+                                        placeholder="Gorev girin..."
                                         value={task}
                                         onChange={handleTaskChange}
                                     />
@@ -194,5 +188,22 @@ function App() {
         </Router>
     );
 }
+
+const Sidebar = () => {
+    const location = useLocation();
+
+    if (location.pathname === '/login' || location.pathname === '/register') {
+        return null; 
+    }
+
+    return (
+        <aside className="sidebar">
+            <Link to="/users" className="nav-link">Kullanicilar</Link>
+            <Link to="/tasks" className="nav-link">Gorevler</Link>
+            <Link to="/task-distribution" className="nav-link">Gorev Dagitimi</Link>
+            <Link to="/task-planning" className="nav-link">Gorev Planlama</Link>
+        </aside>
+    );
+};
 
 export default App;
