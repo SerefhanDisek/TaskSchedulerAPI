@@ -25,38 +25,51 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ResultDto> RegisterAsync(UserRegisterDto registerDto)
+    public async Task<ActionResult<ResultDto>> RegisterAsync([FromBody] UserRegisterDto registerDto)
     {
-        var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
-
-        if (existingUser != null)
+        try
         {
-            return new ResultDto
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == registerDto.UserName || u.Email == registerDto.Email);
+
+            if (existingUser != null)
+            {
+                return BadRequest(new ResultDto
+                {
+                    IsSuccessed = false,
+                    Message = "Username or email already exists."
+                });
+            }
+
+            var newUser = new User
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                UserName = registerDto.UserName,
+                Email = registerDto.Email,
+                Password = registerDto.Password,
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return Ok(new ResultDto
+            {
+                IsSuccessed = true,
+                Message = "User registered successfully."
+            });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (optional)
+            return StatusCode(500, new ResultDto
             {
                 IsSuccessed = false,
-                Message = "Username or email already exists."
-            };
+                Message = "An error occurred while processing your request."
+            });
         }
-
-        var newUser = new User
-        {
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-            UserName = registerDto.UserName,
-            Email = registerDto.Email,
-            Password = registerDto.Password,
-        };
-
-        _context.Users.Add(newUser);
-        await _context.SaveChangesAsync();
-
-        return new ResultDto
-        {
-            IsSuccessed = true,
-            Message = "User registered successfully."
-        };
     }
+
 
 
     [HttpPost("login")]
