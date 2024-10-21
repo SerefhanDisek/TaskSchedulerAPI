@@ -11,7 +11,9 @@
         padding: 10px;
         border: 1px solid #ccc;
         font-size: 16px;
+        flex: 1;
         border-radius: 10px;
+        color: black;
     }
 
 .user-list {
@@ -33,3 +35,4 @@ table {
     table th {
         background-color: #f2f2f2;
     }
+

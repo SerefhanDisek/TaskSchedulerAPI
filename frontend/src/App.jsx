@@ -6,13 +6,24 @@ import LoginPage from "./components/LoginPage";
 import TaskScheduler from "./components/TaskScheduler";
 import Tasks from "./components/Tasks";
 import Users from "./components/Users";
+import TaskDistribution from "./components/TaskDistribution";
 
 function App() {
-    const [tasks, setTasks] = useState([]);
+    // Tek bir tasks tanýmlamasý olmalý
+    const [tasks, setTasks] = useState([
+        { id: 1, task: "Gorev 1", done: false },
+        { id: 2, task: "Gorev 2", done: false }
+    ]);
+
     const [completedTasks, setCompletedTasks] = useState([]);
     const [task, setTask] = useState("");
     const [priority, setPriority] = useState("top");
     const [deadline, setDeadline] = useState("");
+
+    const [users] = useState([
+        { id: 1, name: "Kullanici 1" },
+        { id: 2, name: "Kullanici 2" }
+    ]);
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
@@ -47,7 +58,9 @@ function App() {
     };
 
     const markDone = (id) => {
-        const updatedTasks = tasks.map((t) => t.id === id ? { ...t, done: true } : t);
+        const updatedTasks = tasks.map((t) =>
+            t.id === id ? { ...t, done: true } : t
+        );
         setTasks(updatedTasks);
 
         const completedTask = tasks.find((t) => t.id === id);
@@ -172,6 +185,10 @@ function App() {
                     <Route path="/task-planning" element={<TaskScheduler />} />
                     <Route path="/tasks" element={<Tasks />} />
                     <Route path="/users" element={<Users />} />
+                    <Route
+                        path="/task-distribution"
+                        element={<TaskDistribution tasks={tasks} users={users} setTasks={setTasks} />}
+                    />
                 </Routes>
             </div>
         </Router>
