@@ -7,8 +7,18 @@ import TaskScheduler from "./components/TaskScheduler";
 import Tasks from "./components/Tasks";
 import Users from "./components/Users";
 import TaskDistribution from "./components/TaskDistribution";
-import FirmSelector from "./components/FirmSelector"; 
-import { firms } from "./firms"; 
+import FirmSelector from "./components/FirmSelector";
+import nukonImg1 from "./assets/images/NUKON1.jpg";
+import nukonImg2 from "./assets/images/NUKON2.jpg";
+import nuriKorustanImg1 from "./assets/images/NKM.jpg";
+import nuriKorustanImg2 from "./assets/images/NKM2.jpg";
+import nknImg1 from "./assets/images/NKN1.jpg";
+
+const firms = {
+    NUKON: [nukonImg1, nukonImg2], 
+    "NURÝ KÖRÜSTAN MAKÝNE": [nuriKorustanImg1, nuriKorustanImg2], 
+    NKN: [nknImg1], 
+};
 
 function App() {
     const [tasks, setTasks] = useState([
@@ -25,7 +35,7 @@ function App() {
         { id: 2, name: "Kullanici 2" }
     ]);
 
-    const [currentFirm, setCurrentFirm] = useState(firms.NUKON); 
+    const [currentFirm, setCurrentFirm] = useState("NUKON"); 
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
@@ -82,11 +92,13 @@ function App() {
                     <Link to="/register" className="nav-link">Kayit Ol</Link>
                     <Link to="/login" className="nav-link">Giris Yap</Link>
                 </nav>
-                <FirmSelector onSelectFirm={setCurrentFirm} /> {/* Firma seçimi */}
+                <FirmSelector onSelectFirm={setCurrentFirm} /> 
             </header>
 
             <div className="layout">
                 <Sidebar />
+
+                <img src={firms[currentFirm][0]} alt={currentFirm} className="firm-image" /> 
 
                 <Routes>
                     <Route
@@ -187,16 +199,6 @@ function App() {
                         path="/task-distribution"
                         element={<TaskDistribution tasks={tasks} users={users} setTasks={setTasks} />}
                     />
-                    <Route
-                        path="/"
-                        element={
-                            <main>
-                                <h2>Secilen Firma: {currentFirm}</h2> {/* Seçilen firmayý göster */}
-                                {/* ... (diðer içerikler) */}
-                            </main>
-                        }
-                    />
-
                 </Routes>
             </div>
         </Router>
