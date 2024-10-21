@@ -7,6 +7,8 @@ import TaskScheduler from "./components/TaskScheduler";
 import Tasks from "./components/Tasks";
 import Users from "./components/Users";
 import TaskDistribution from "./components/TaskDistribution";
+import FirmSelector from "./components/FirmSelector"; 
+import { firms } from "./firms"; 
 
 function App() {
     const [tasks, setTasks] = useState([
@@ -18,11 +20,12 @@ function App() {
     const [task, setTask] = useState("");
     const [priority, setPriority] = useState("top");
     const [deadline, setDeadline] = useState("");
-
     const [users] = useState([
         { id: 1, name: "Kullanici 1" },
         { id: 2, name: "Kullanici 2" }
     ]);
+
+    const [currentFirm, setCurrentFirm] = useState(firms.NUKON); 
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
@@ -79,6 +82,7 @@ function App() {
                     <Link to="/register" className="nav-link">Kayit Ol</Link>
                     <Link to="/login" className="nav-link">Giris Yap</Link>
                 </nav>
+                <FirmSelector onSelectFirm={setCurrentFirm} /> {/* Firma seçimi */}
             </header>
 
             <div className="layout">
@@ -183,6 +187,16 @@ function App() {
                         path="/task-distribution"
                         element={<TaskDistribution tasks={tasks} users={users} setTasks={setTasks} />}
                     />
+                    <Route
+                        path="/"
+                        element={
+                            <main>
+                                <h2>Secilen Firma: {currentFirm}</h2> {/* Seçilen firmayý göster */}
+                                {/* ... (diðer içerikler) */}
+                            </main>
+                        }
+                    />
+
                 </Routes>
             </div>
         </Router>
@@ -193,7 +207,7 @@ const Sidebar = () => {
     const location = useLocation();
 
     if (location.pathname === '/login' || location.pathname === '/register') {
-        return null; 
+        return null;
     }
 
     return (
