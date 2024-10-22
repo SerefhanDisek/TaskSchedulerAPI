@@ -24,7 +24,7 @@ const RegisterPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:7184/api/Auth/register', {  // API URL'sini uygun bir şekilde ayarlayın
+            const response = await fetch('https://localhost:7184/api/Auth/register', {  
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const RegisterPage = () => {
             if (response.ok) {
                 setSuccessMessage(data.Message || 'Kayit islemi basarili!'); 
                 setTimeout(() => {
-                    navigate('/profile'); 
+                    navigate('/task-planning'); 
                 }, 2000);
             } else {
                 setErrorMessage(data.Message || 'Kayit islemi basarisiz oldu!'); 

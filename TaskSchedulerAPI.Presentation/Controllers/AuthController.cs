@@ -70,8 +70,6 @@ public class AuthController : ControllerBase
         }
     }
 
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLoginDto loginDto)
     {
@@ -89,7 +87,6 @@ public class AuthController : ControllerBase
             token = token 
         });
     }
-
 
     private string GenerateJwtToken(User user)
     {
