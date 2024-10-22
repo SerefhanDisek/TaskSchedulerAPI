@@ -14,7 +14,7 @@ const Users = () => {
     }, []);
 
     const fetchUsers = async () => {
-        const response = await fetch("https://localhost:7184/api/User"); // API adresini güncelle
+        const response = await fetch("https://localhost:7184/api/User"); 
         const data = await response.json();
         setUsers(data);
     };
@@ -35,7 +35,7 @@ const Users = () => {
             LastName: lastName,
             Email: email,
             Roles: role,
-            Password: "defaultPassword123" // Þifreyi gerektiði þekilde ayarlayabilirsin
+            Password: "defaultPassword123" 
         };
 
         if (editingUserId) {
@@ -59,7 +59,7 @@ const Users = () => {
         if (response.ok) {
             fetchUsers();
         } else {
-            alert("Kullanýcý oluþturulamadý.");
+            alert("Kullanici olusturulamadi.");
         }
     };
 
@@ -76,7 +76,7 @@ const Users = () => {
             fetchUsers();
             setEditingUserId(null);
         } else {
-            alert("Kullanýcý güncellenemedi.");
+            alert("Kullanici guncellenemedi.");
         }
     };
 
@@ -88,7 +88,7 @@ const Users = () => {
         if (response.ok) {
             fetchUsers();
         } else {
-            alert("Kullanýcý silinemedi.");
+            alert("Kullanici silinemedi.");
         }
     };
 
@@ -115,7 +115,7 @@ const Users = () => {
                 <input
                     type="text"
                     id="first-name"
-                    placeholder="Ýsim girin..."
+                    placeholder="Isim girin..."
                     value={firstName}
                     onChange={handleFirstNameChange}
                 />
@@ -151,11 +151,11 @@ const Users = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Ýsim</th>
+                            <th>Isim</th>
                             <th>Soyisim</th>
                             <th>E-posta</th>
                             <th>Rol</th>
-                            <th>Ýþlemler</th>
+                            <th>Islemler</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,7 +167,7 @@ const Users = () => {
                                 <td>{u.roles}</td>
                                 <td>
                                     <button onClick={() => editUser(u)}>
-                                        Düzenle
+                                        Duzenle
                                     </button>
                                     <button onClick={() => deleteUser(u.id)}>
                                         Sil

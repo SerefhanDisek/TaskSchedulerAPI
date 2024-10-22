@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskSchedulerAPI.Core.Interfaces;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TaskDistributionController : ControllerBase
