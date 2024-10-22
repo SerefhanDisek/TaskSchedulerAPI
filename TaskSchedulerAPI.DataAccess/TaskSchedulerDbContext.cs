@@ -50,6 +50,7 @@ namespace TaskSchedulerAPI.DataAccess
                UserName = "Serefhan",
                Email = "serefhan@example.com",
                Password = "Password1",
+               Roles = "Admin"
             },
             new User
             {
@@ -58,7 +59,8 @@ namespace TaskSchedulerAPI.DataAccess
                 LastName = "Kaya",
                 UserName = "Yusuf",
                 Email = "yusuf@example.com",
-                Password = "Password2"
+                Password = "Password2",
+                Roles = "Kullanici"
             }
         );
 

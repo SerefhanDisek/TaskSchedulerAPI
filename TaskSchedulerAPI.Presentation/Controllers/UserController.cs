@@ -6,7 +6,6 @@ using TaskSchedulerAPI.DataAccess;
 
 namespace TaskSchedulerAPI.Presentation.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase

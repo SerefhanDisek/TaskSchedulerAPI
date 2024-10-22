@@ -1,56 +1,111 @@
-import { useState } from "react";
-import "../styles/Users.css"; 
+import { useEffect, useState } from "react";
+import "../styles/Users.css";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
-    const [name, setName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("RegularUser");
     const [editingUserId, setEditingUserId] = useState(null);
 
-    const handleNameChange = (e) => setName(e.target.value);
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = async () => {
+        const response = await fetch("https://localhost:7184/api/User"); // API adresini güncelle
+        const data = await response.json();
+        setUsers(data);
+    };
+
+    const handleFirstNameChange = (e) => setFirstName(e.target.value);
+    const handleLastNameChange = (e) => setLastName(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handleRoleChange = (e) => setRole(e.target.value);
 
-    const addUser = () => {
-        if (name.trim() === "" || email.trim() === "") {
+    const addUser = async () => {
+        if (firstName.trim() === "" || email.trim() === "") {
             alert("Lutfen bir isim ve e-posta girin.");
             return;
         }
 
+        const userDto = {
+            FirstName: firstName,
+            LastName: lastName,
+            Email: email,
+            Roles: role,
+            Password: "defaultPassword123" // Þifreyi gerektiði þekilde ayarlayabilirsin
+        };
+
         if (editingUserId) {
-            
-            const updatedUsers = users.map((u) =>
-                u.id === editingUserId ? { ...u, name, email, role } : u
-            );
-            setUsers(updatedUsers);
-            setEditingUserId(null);
+            await updateUser(editingUserId, userDto);
         } else {
-            
-            const newUser = {
-                id: users.length + 1,
-                name,
-                email,
-                role,
-            };
-            setUsers([...users, newUser]);
+            await createUser(userDto);
         }
 
-        setName("");
-        setEmail("");
-        setRole("RegularUser");
+        resetForm();
+    };
+
+    const createUser = async (userDto) => {
+        const response = await fetch("https://localhost:7184/api/User", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userDto),
+        });
+
+        if (response.ok) {
+            fetchUsers();
+        } else {
+            alert("Kullanýcý oluþturulamadý.");
+        }
+    };
+
+    const updateUser = async (id, userDto) => {
+        const response = await fetch(`https://localhost:7184/api/user/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userDto),
+        });
+
+        if (response.ok) {
+            fetchUsers();
+            setEditingUserId(null);
+        } else {
+            alert("Kullanýcý güncellenemedi.");
+        }
+    };
+
+    const deleteUser = async (id) => {
+        const response = await fetch(`https://localhost:7184/api/user/${id}`, {
+            method: "DELETE",
+        });
+
+        if (response.ok) {
+            fetchUsers();
+        } else {
+            alert("Kullanýcý silinemedi.");
+        }
     };
 
     const editUser = (userToEdit) => {
-        setName(userToEdit.name);
+        setFirstName(userToEdit.firstName);
+        setLastName(userToEdit.lastName);
         setEmail(userToEdit.email);
-        setRole(userToEdit.role);
+        setRole(userToEdit.roles);
         setEditingUserId(userToEdit.id);
     };
 
-    const deleteUser = (id) => {
-        const updatedUsers = users.filter((u) => u.id !== id);
-        setUsers(updatedUsers);
+    const resetForm = () => {
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setRole("RegularUser");
+        setEditingUserId(null);
     };
 
     return (
@@ -59,10 +114,17 @@ const Users = () => {
             <div className="user-form">
                 <input
                     type="text"
-                    id="name"
-                    placeholder="Isim girin..."
-                    value={name}
-                    onChange={handleNameChange}
+                    id="first-name"
+                    placeholder="Ýsim girin..."
+                    value={firstName}
+                    onChange={handleFirstNameChange}
+                />
+                <input
+                    type="text"
+                    id="last-name"
+                    placeholder="Soyisim girin..."
+                    value={lastName}
+                    onChange={handleLastNameChange}
                 />
                 <input
                     type="email"
@@ -89,21 +151,23 @@ const Users = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Isim</th>
+                            <th>Ýsim</th>
+                            <th>Soyisim</th>
                             <th>E-posta</th>
                             <th>Rol</th>
-                            <th>Islemler</th>
+                            <th>Ýþlemler</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users.map((u) => (
                             <tr key={u.id}>
-                                <td>{u.name}</td>
+                                <td>{u.firstName}</td>
+                                <td>{u.lastName}</td>
                                 <td>{u.email}</td>
-                                <td>{u.role}</td>
+                                <td>{u.roles}</td>
                                 <td>
                                     <button onClick={() => editUser(u)}>
-                                        Duzenle
+                                        Düzenle
                                     </button>
                                     <button onClick={() => deleteUser(u.id)}>
                                         Sil
