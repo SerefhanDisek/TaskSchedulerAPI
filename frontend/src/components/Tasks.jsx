@@ -32,7 +32,7 @@ const Tasks = () => {
 
     const addTask = async () => {
         if (taskName.trim() === "" || dueDate === "") {
-            alert("Lütfen bir görev adý girin ve geçerli bir teslim tarihi seçin.");
+            alert("Lutfen bir gorev adi girin ve gecerli bir teslim tarihi secin.");
             return;
         }
 
@@ -40,7 +40,7 @@ const Tasks = () => {
         const currentDate = new Date();
 
         if (selectedDate <= currentDate) {
-            alert("Lütfen gelecekte bir tarih seçin.");
+            alert("Lutfen gelecekte bir tarih secin.");
             return;
         }
 
@@ -104,19 +104,19 @@ const Tasks = () => {
 
     return (
         <main>
-            <h2 className="heading">{editingTaskId ? "Görevi Güncelle" : "Görev Ekle"}</h2>
+            <h2 className="heading">{editingTaskId ? "Gorevi Guncelle" : "Gorev Ekle"}</h2>
             <div className="task-form">
                 <input
                     type="text"
                     id="taskName"
-                    placeholder="Görev adý girin..."
+                    placeholder="Gorev adi girin..."
                     value={taskName}
                     onChange={handleTaskNameChange}
                 />
                 <input
                     type="text"
                     id="description"
-                    placeholder="Açýklama girin..."
+                    placeholder="Aciklama girin..."
                     value={description}
                     onChange={handleDescriptionChange}
                 />
@@ -125,9 +125,9 @@ const Tasks = () => {
                     value={priority}
                     onChange={handlePriorityChange}
                 >
-                    <option value="top">Öncelikli</option>
-                    <option value="middle">Orta Öncelik</option>
-                    <option value="low">Az Öncelikli</option>
+                    <option value="top">Oncelikli</option>
+                    <option value="middle">Orta Oncelik</option>
+                    <option value="low">Az Oncelikli</option>
                 </select>
                 <input
                     type="date"
@@ -136,21 +136,21 @@ const Tasks = () => {
                     onChange={handleDueDateChange}
                 />
                 <button id="add-task" onClick={addTask}>
-                    {editingTaskId ? "Güncelle" : "Ekle"}
+                    {editingTaskId ? "Guncelle" : "Ekle"}
                 </button>
             </div>
 
-            <h2 className="heading">Aktif Görevler</h2>
+            <h2 className="heading">Aktif Gorevler</h2>
             <div className="task-list">
                 <table>
                     <thead>
                         <tr>
-                            <th>Görev Adý</th>
-                            <th>Açýklama</th>
-                            <th>Öncelik</th>
+                            <th>Gorev Adi</th>
+                            <th>Aciklama</th>
+                            <th>Oncelik</th>
                             <th>Teslim Tarihi</th>
                             <th>Durum</th>
-                            <th>Ýþlemler</th>
+                            <th>Islemler</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,7 +169,7 @@ const Tasks = () => {
                                 </td>
                                 <td>
                                     <button onClick={() => editTask(t)}>
-                                        Düzenle
+                                        Duzenle
                                     </button>
                                     <button onClick={() => deleteTask(t.id)}>
                                         Sil

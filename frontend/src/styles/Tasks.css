@@ -11,6 +11,7 @@ body {
     display: flex;
     justify-content: center;
     height: 100vh;
+    flex-direction: column; 
 }
 
 h2 {
@@ -35,26 +36,26 @@ li {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #fff; 
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button {
     padding: 8px 12px;
     border: none;
     border-radius: 10px;
-    background-color: white; 
+    background-color: white;
     color: #FF7F00;
     cursor: pointer;
-    transition: background-color 0.3s; 
+    transition: background-color 0.3s;
     font-size: 16px;
 }
 
     button:hover {
-        background-color: grey; 
+        background-color: grey;
     }
 
 input[type="text"], textarea {
@@ -63,7 +64,7 @@ input[type="text"], textarea {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 10px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .error {
@@ -76,4 +77,13 @@ input[type="text"], textarea {
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
+}
+
+.task-list {
+    max-height: 300px; 
+    overflow-y: auto; 
+    margin-top: 20px; 
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    background-color: #fff; 
 }
