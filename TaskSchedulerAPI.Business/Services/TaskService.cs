@@ -35,7 +35,7 @@ namespace TaskSchedulerAPI.Business.Services
             return _mapper .Map<IEnumerable<TaskDto>>(task);
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteTaskAsync(int id)
         {
             var task = await _taskRepository.GetByIdAsync(id);
             if (task == null) return false;

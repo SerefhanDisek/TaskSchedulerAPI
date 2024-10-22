@@ -9,7 +9,7 @@ namespace TaskSchedulerAPI.Core.Interfaces.Services
         Task<TaskDto> GetTaskByIdAsync(int id);
         Task<TaskDto> CreateTaskAsync(TaskCreateDto taskDto);
         Task<bool> UpdateTaskAsync(TaskUpdateDto taskUpdateDto);
-        Task<bool> DeleteUserAsync(int id);
+        Task<bool> DeleteTaskAsync(int id);
         Task<List<Tasks>> GetUncompletedTasksAsync();
         Task<bool> UpdateTaskAssignmentAsync(int taskId, int userId);
     }

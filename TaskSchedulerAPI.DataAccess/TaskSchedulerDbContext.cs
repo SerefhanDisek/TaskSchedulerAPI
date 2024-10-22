@@ -68,6 +68,7 @@ namespace TaskSchedulerAPI.DataAccess
                     Id = 1,
                     Name = "Task 1",
                     Description = "Complete the first task",
+                    Priority = "Oncelikli",
                     DueDate = DateTime.UtcNow.AddDays(7),
                     IsCompleted = false,
                     CreatedAt = DateTime.UtcNow
@@ -77,6 +78,7 @@ namespace TaskSchedulerAPI.DataAccess
                     Id = 2,
                     Name = "Task 2",
                     Description = "Start the second task",
+                    Priority = "Oncelikli",
                     DueDate = DateTime.UtcNow.AddDays(14),
                     IsCompleted = false,
                     CreatedAt = DateTime.UtcNow
