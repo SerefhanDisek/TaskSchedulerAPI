@@ -61,7 +61,6 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Log the exception (optional)
             return StatusCode(500, new ResultDto
             {
                 IsSuccessed = false,

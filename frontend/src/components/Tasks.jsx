@@ -9,6 +9,7 @@ const Tasks = () => {
     const [priority, setPriority] = useState("top");
     const [dueDate, setDueDate] = useState("");
     const [editingTaskId, setEditingTaskId] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const API_URL = "https://localhost:7184/api/Tasks";
 
@@ -18,6 +19,7 @@ const Tasks = () => {
             setTasks(response.data);
         } catch (error) {
             console.error("Error fetching tasks:", error);
+            setErrorMessage("Gorevler yuklenirken bir hata olustu.");
         }
     };
 
@@ -45,6 +47,7 @@ const Tasks = () => {
         }
 
         const newTask = {
+            id: editingTaskId ? editingTaskId : undefined,
             name: taskName,
             description,
             priority,
@@ -71,6 +74,7 @@ const Tasks = () => {
             setDueDate("");
         } catch (error) {
             console.error("Error adding/updating task:", error);
+            setErrorMessage("Gorev eklerken veya guncellerken bir hata olustu.");
         }
     };
 
@@ -81,6 +85,7 @@ const Tasks = () => {
             setTasks(updatedTasks);
         } catch (error) {
             console.error("Error marking task as done:", error);
+            setErrorMessage("Gorev tamamlanirken bir hata olustu.");
         }
     };
 
@@ -88,7 +93,7 @@ const Tasks = () => {
         setTaskName(taskToEdit.name);
         setDescription(taskToEdit.description);
         setPriority(taskToEdit.priority);
-        setDueDate(taskToEdit.dueDate);
+        setDueDate(new Date(taskToEdit.dueDate).toISOString().split('T')[0]);
         setEditingTaskId(taskToEdit.id);
     };
 
@@ -99,12 +104,14 @@ const Tasks = () => {
             setTasks(updatedTasks);
         } catch (error) {
             console.error("Error deleting task:", error);
+            setErrorMessage("Gorev silinirken bir hata olustu.");
         }
     };
 
     return (
         <main>
             <h2 className="heading">{editingTaskId ? "Gorevi Guncelle" : "Gorev Ekle"}</h2>
+            {errorMessage && <p className="error">{errorMessage}</p>}
             <div className="task-form">
                 <input
                     type="text"

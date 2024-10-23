@@ -57,5 +57,12 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
         {
             return await _context.Set<Tasks>().Where(predicate).ToListAsync();
         }
+
+        public async Task<IEnumerable<Tasks>> GetActiveTasksAsync()
+        {
+            return await _context.Tasks
+                .Where(task => !task.IsCompleted) 
+                .ToListAsync();
+        }
     }
 }

@@ -109,6 +109,11 @@ namespace TaskSchedulerAPI.Business.Services
             return true; 
         }
 
+        public async Task<IEnumerable<Tasks>> GetActiveTasksAsync()
+        {
+            return await _taskRepository.GetActiveTasksAsync();
+        }
+
 
     }
 }

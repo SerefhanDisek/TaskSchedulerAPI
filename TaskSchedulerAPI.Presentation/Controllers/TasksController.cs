@@ -16,7 +16,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             _taskService = taskService;
         }
 
-        // Task oluşturma
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] TaskCreateDto taskDto)
         {
@@ -30,7 +29,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return Ok(task);
         }
 
-        // Tüm Task'ları getirme
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
@@ -41,7 +39,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return Ok(tasks);
         }
 
-        // Task silme
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
@@ -52,7 +49,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return NoContent();
         }
 
-        // Task atamasını güncelleme (örneğin bir kullanıcıya atama)
         [HttpPut("update-task-assignment")]
         public async Task<IActionResult> UpdateTaskAssignment(int taskId, int userId)
         {
@@ -63,7 +59,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return Ok("Task assignment updated successfully.");
         }
 
-        // Task güncelleme
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskUpdateDto taskUpdateDto)
         {
@@ -74,7 +69,7 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             if (!result)
                 return NotFound($"Task with ID {id} not found.");
 
-            return NoContent();
+            return Ok("Task updated successfully.");
         }
     }
 }

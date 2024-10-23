@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using TaskSchedulerAPI.Core.Entities;
-using TaskSchedulerAPI.Core.Interfaces.Services;
-using TaskSchedulerAPI.Core.Interfaces;
 using Microsoft.Extensions.Logging;
+using TaskSchedulerAPI.Core.DTOs;
+using TaskSchedulerAPI.Core.Entities;
+using TaskSchedulerAPI.Core.Interfaces;
+using TaskSchedulerAPI.Core.Interfaces.Services;
 
 public class TaskDistributionService : ITaskDistributionService
 {
@@ -143,5 +144,16 @@ public class TaskDistributionService : ITaskDistributionService
 
         return true;
     }
-}
 
+    public async Task<List<TaskDto>> GetActiveTasksAsync()
+    {
+        var tasks = await _taskRepository.GetActiveTasksAsync();
+        return _mapper.Map<List<TaskDto>>(tasks);
+    }
+
+    public async Task<List<UserDto>> GetUsersAsync()
+    {
+        var users = await _userService.GetAllUsersAsync();
+        return _mapper.Map<List<UserDto>>(users);
+    }
+}
