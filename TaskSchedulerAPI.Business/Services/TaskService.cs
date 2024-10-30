@@ -114,6 +114,5 @@ namespace TaskSchedulerAPI.Business.Services
             return await _taskRepository.GetActiveTasksAsync();
         }
 
-
     }
 }
