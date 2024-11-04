@@ -22,13 +22,13 @@ function TaskDistribution({ updateTasks }) {
             setUsers(usersResponse.data);
             updateTasks(tasksResponse.data); 
         } catch (error) {
-            console.error("Görevler ve kullanýcýlar çekilirken hata:", error.response ? error.response.data : error.message);
+            console.error("Gorevler ve kullanicilar cekilirken hata:", error.response ? error.response.data : error.message);
         }
     };
 
     const distributeTasks = () => {
         if (tasks.length === 0 || users.length === 0) {
-            alert("Atanacak görev veya kullanýcý yok.");
+            alert("Atanacak gorev veya kullanici yok.");
             return;
         }
 
@@ -56,29 +56,29 @@ function TaskDistribution({ updateTasks }) {
     const confirmAssignments = async () => {
         try {
             await axios.put(`${API_URL}/update`, taskAssignments);
-            alert("Görevler baþarýyla kullanýcýlara daðýtýldý!");
+            alert("Gorevler basariyla kullanicilara dagitildi!");
             fetchTasksAndUsers();
         } catch (error) {
-            console.error("Görev daðýtýmýnda hata:", error.response ? error.response.data : error.message);
-            alert("Görev daðýtýmýnda bir hata oluþtu.");
+            console.error("Gorev dagitiminda hata:", error.response ? error.response.data : error.message);
+            alert("Gorev dagitiminda bir hata olustu.");
         }
     };
 
     const assignTaskToUser = async () => {
         if (selectedTaskId === "" || selectedUserId === "") {
-            alert("Lütfen bir görev ve kullanýcý seçin.");
+            alert("Lutfen bir gorev ve kullanici secin.");
             return;
         }
 
         try {
             await axios.post(`${API_URL}/assign`, { taskId: selectedTaskId, userId: selectedUserId });
-            alert("Görev baþarýyla kullanýcýya atandý.");
+            alert("Gorev basariyla kullaniciya atandi.");
             setSelectedTaskId("");
             setSelectedUserId("");
             fetchTasksAndUsers();
         } catch (error) {
-            console.error("Görev atamasýnda hata:", error.response ? error.response.data : error.message);
-            alert("Görev atamasýnda bir hata oluþtu.");
+            console.error("Gorev atamasinda hata:", error.response ? error.response.data : error.message);
+            alert("Gorev atamasinda bir hata olustu.");
         }
     };
 
@@ -88,13 +88,13 @@ function TaskDistribution({ updateTasks }) {
 
     return (
         <div className="task-distribution-container">
-            <h2>Görev Daðýtýmý</h2>
-            <button onClick={distributeTasks} className="distribute-button">Rastgele Daðýt</button>
+            <h2>Gorev Dagitimi</h2>
+            <button onClick={distributeTasks} className="distribute-button">Rastgele Dagit</button>
             <table className="task-assignment-table">
                 <thead>
                     <tr>
-                        <th>Görev</th>
-                        <th>Atanan Kullanýcý</th>
+                        <th>Gorev</th>
+                        <th>Atanan Kullanici</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,22 +103,22 @@ function TaskDistribution({ updateTasks }) {
                         return (
                             <tr key={task.id}>
                                 <td>{task.task}</td>
-                                <td>{assignedUser ? assignedUser.name : "Atanmamýþ"}</td>
+                                <td>{assignedUser ? assignedUser.name : "Atanmamis"}</td>
                             </tr>
                         );
                     })}
                 </tbody>
             </table>
-            <button onClick={confirmAssignments} className="confirm-button">Atamalarý Onayla</button>
+            <button onClick={confirmAssignments} className="confirm-button">Atamalari Onayla</button>
 
-            <h3>Görev Atama</h3>
+            <h3>Gorev Atama</h3>
             <div className="assignment-form">
                 <select
                     value={selectedTaskId}
                     onChange={(e) => setSelectedTaskId(e.target.value)}
                     className="select-task"
                 >
-                    <option value="" disabled>Görev Seçin</option>
+                    <option value="" disabled>Gorev Secin</option>
                     {tasks.filter(task => !task.done).map(task => (
                         <option key={task.id} value={task.id}>{task.task}</option>
                     ))}
@@ -129,13 +129,13 @@ function TaskDistribution({ updateTasks }) {
                     onChange={(e) => setSelectedUserId(e.target.value)}
                     className="select-user"
                 >
-                    <option value="" disabled>Kullanýcý Seçin</option>
+                    <option value="" disabled>Kullanici Secin</option>
                     {users.map(user => (
                         <option key={user.id} value={user.id}>{user.name}</option>
                     ))}
                 </select>
 
-                <button onClick={assignTaskToUser} className="assign-button">Görev Ata</button>
+                <button onClick={assignTaskToUser} className="assign-button">Gorev Ata</button>
             </div>
         </div>
     );

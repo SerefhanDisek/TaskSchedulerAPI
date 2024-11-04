@@ -37,18 +37,6 @@ public class TaskDistributionController : ControllerBase
         return Ok(assignments);
     }
 
-    [HttpPost("assign")]
-    public async Task<IActionResult> AssignTaskToUser([FromBody] AssignTaskRequest request)
-    {
-        var result = await _taskDistributionService.AssignTaskToUserAsync(request.TaskId, request.UserId);
-        if (!result)
-        {
-            return BadRequest("Task could not be assigned to user.");
-        }
-
-        return Ok("Task assigned to user successfully.");
-    }
-
     [HttpPut("update")]
     public async Task<IActionResult> UpdateTaskAssignment([FromBody] UpdateTaskAssignmentRequest request)
     {
@@ -59,18 +47,6 @@ public class TaskDistributionController : ControllerBase
         }
 
         return Ok("Task assignment updated successfully.");
-    }
-
-    [HttpPost("confirm-assignments")]
-    public async Task<IActionResult> ConfirmAssignments([FromBody] List<TaskAssignmentDto> assignments)
-    {
-        var result = await _taskDistributionService.ConfirmAssignmentsAsync(assignments);
-        if (!result)
-        {
-            return BadRequest("Assignments could not be confirmed.");
-        }
-
-        return Ok("Assignments confirmed successfully.");
     }
 
     [HttpPost("trigger-log")]
