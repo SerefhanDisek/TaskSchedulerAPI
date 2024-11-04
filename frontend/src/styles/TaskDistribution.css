@@ -10,15 +10,15 @@ body {
     color: #333;
     display: flex;
     justify-content: center;
-    height: 100vh;
     align-items: center;
+    min-height: 100vh;
 }
 
 .layout {
     display: flex;
     width: 100%;
     max-width: 1200px;
-    margin: 20px auto; 
+    margin: 20px auto;
 }
 
 .sidebar {
@@ -27,7 +27,7 @@ body {
     padding: 15px;
     box-shadow: 0 4px 18px grey;
     border-radius: 10px;
-    margin-right: 20px; 
+    margin-right: 20px;
 }
 
 .task-distribution-container {
@@ -35,7 +35,9 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 18px grey;
-    flex: 1; 
+    flex: 1;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 h2 {
@@ -49,17 +51,22 @@ table {
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
+    text-align: center;
 }
 
 th, td {
     padding: 10px;
-    text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 th {
     background-color: #FF7F00;
     color: white;
+    font-weight: 600;
+}
+
+td {
+    color: #555;
 }
 
 button {
@@ -69,13 +76,26 @@ button {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     transition: background-color 0.3s ease;
+    margin: 10px auto;
+    display: block;
 }
 
     button:hover {
         background-color: #e76e00;
     }
+
+select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.task-distribution-container h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}

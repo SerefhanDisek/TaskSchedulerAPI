@@ -15,9 +15,9 @@ import nuriKorustanImg2 from "./assets/images/NKM2.jpg";
 import nknImg1 from "./assets/images/NKN1.jpg";
 
 const firms = {
-    NUKON: [nukonImg1, nukonImg2], 
-    "NURÝ KÖRÜSTAN MAKÝNE": [nuriKorustanImg1, nuriKorustanImg2], 
-    NKN: [nknImg1], 
+    NUKON: [nukonImg1, nukonImg2],
+    "NURÝ KÖRÜSTAN MAKÝNE": [nuriKorustanImg1, nuriKorustanImg2],
+    NKN: [nknImg1],
 };
 
 function App() {
@@ -35,7 +35,8 @@ function App() {
         { id: 2, name: "Kullanici 2" }
     ]);
 
-    const [currentFirm, setCurrentFirm] = useState("NUKON"); 
+    const [currentFirm, setCurrentFirm] = useState("NUKON");
+    const [errorMessage, setErrorMessage] = useState(""); // Hata mesajlarý için state
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
@@ -43,7 +44,7 @@ function App() {
 
     const addTask = () => {
         if (task.trim() === "" || deadline === "") {
-            alert("Please enter a task and select a valid deadline.");
+            setErrorMessage("Lütfen bir görev girin ve geçerli bir teslim tarihi seçin.");
             return;
         }
 
@@ -51,9 +52,12 @@ function App() {
         const currentDate = new Date();
 
         if (selectedDate <= currentDate) {
-            alert("Please select a future date for the deadline.");
+            setErrorMessage("Lütfen gelecekteki bir tarih seçin.");
             return;
         }
+
+        // Hata mesajýný temizle
+        setErrorMessage("");
 
         const newTask = {
             id: tasks.length + 1,
@@ -92,13 +96,13 @@ function App() {
                     <Link to="/register" className="nav-link">Kayit Ol</Link>
                     <Link to="/login" className="nav-link">Giris Yap</Link>
                 </nav>
-                <FirmSelector onSelectFirm={setCurrentFirm} /> 
+                <FirmSelector onSelectFirm={setCurrentFirm} />
             </header>
 
             <div className="layout">
                 <Sidebar />
 
-                <img src={firms[currentFirm][0]} alt={currentFirm} className="firm-image" /> 
+                <img src={firms[currentFirm][0]} alt={currentFirm} className="firm-image" />
 
                 <Routes>
                     <Route
@@ -132,6 +136,8 @@ function App() {
                                         Ekle
                                     </button>
                                 </div>
+
+                                {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Hata mesajý */}
 
                                 <h2 className="heading">Aktif Gorevler</h2>
                                 <div className="task-list" id="task-list">
@@ -197,7 +203,7 @@ function App() {
                     <Route path="/users" element={<Users />} />
                     <Route
                         path="/task-distribution"
-                        element={<TaskDistribution tasks={tasks} users={users} setTasks={setTasks} />}
+                        element={<TaskDistribution tasks={tasks} users={users} updateTasks={setTasks} />}
                     />
                 </Routes>
             </div>

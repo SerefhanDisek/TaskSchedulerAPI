@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces;
 
 [ApiController]
@@ -13,18 +16,31 @@ public class TaskDistributionController : ControllerBase
         _taskDistributionService = taskDistributionService;
     }
 
+    [HttpGet("get-active-tasks")]
+    public async Task<IActionResult> GetActiveTasks()
+    {
+        var tasks = await _taskDistributionService.GetActiveTasksAsync();
+        return Ok(tasks);
+    }
+
+    [HttpGet("get-users")]
+    public async Task<IActionResult> GetUsers()
+    {
+        var users = await _taskDistributionService.GetUsersAsync();
+        return Ok(users);
+    }
+
     [HttpPost("distribute")]
     public async Task<IActionResult> DistributeTasks()
     {
-        await _taskDistributionService.DistributeTasksAsync();
-        return Ok("Tasks have been distributed.");
+        var assignments = await _taskDistributionService.DistributeTasksAsync();
+        return Ok(assignments);
     }
 
-
     [HttpPost("assign")]
-    public async Task<IActionResult> AssignTaskToUser(int taskId, int userId)
+    public async Task<IActionResult> AssignTaskToUser([FromBody] AssignTaskRequest request)
     {
-        var result = await _taskDistributionService.AssignTaskToUserAsync(taskId, userId);
+        var result = await _taskDistributionService.AssignTaskToUserAsync(request.TaskId, request.UserId);
         if (!result)
         {
             return BadRequest("Task could not be assigned to user.");
@@ -34,9 +50,9 @@ public class TaskDistributionController : ControllerBase
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateTaskAssignment(int taskId, int userId)
+    public async Task<IActionResult> UpdateTaskAssignment([FromBody] UpdateTaskAssignmentRequest request)
     {
-        var result = await _taskDistributionService.UpdateTaskAssignmentAsync(taskId, userId);
+        var result = await _taskDistributionService.UpdateTaskAssignmentAsync(request.TaskId, request.UserId);
         if (!result)
         {
             return BadRequest("Task assignment could not be updated.");
@@ -45,11 +61,22 @@ public class TaskDistributionController : ControllerBase
         return Ok("Task assignment updated successfully.");
     }
 
+    [HttpPost("confirm-assignments")]
+    public async Task<IActionResult> ConfirmAssignments([FromBody] List<TaskAssignmentDto> assignments)
+    {
+        var result = await _taskDistributionService.ConfirmAssignmentsAsync(assignments);
+        if (!result)
+        {
+            return BadRequest("Assignments could not be confirmed.");
+        }
+
+        return Ok("Assignments confirmed successfully.");
+    }
+
     [HttpPost("trigger-log")]
     public IActionResult TriggerLog()
     {
         _taskDistributionService.DistributeTasksAsync().Wait();
-        return Ok("Log tetiklendi.");
+        return Ok("Log triggered.");
     }
 }
-

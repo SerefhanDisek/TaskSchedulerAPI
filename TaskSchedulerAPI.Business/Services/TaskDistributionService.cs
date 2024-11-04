@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
+using TaskSchedulerAPI.DataAccess;
 
 public class TaskDistributionService : ITaskDistributionService
 {
@@ -12,12 +14,14 @@ public class TaskDistributionService : ITaskDistributionService
     private readonly ITaskRepository _taskRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<TaskDistributionService> _logger;
+    private readonly TaskSchedulerDbContext _context;
 
     public TaskDistributionService(
         ITaskService taskService,
         IUserService userService,
         ITaskRepository taskRepository,
         IMapper mapper,
+        TaskSchedulerDbContext context,
         ILogger<TaskDistributionService> logger)
     {
         _taskService = taskService;
@@ -25,17 +29,19 @@ public class TaskDistributionService : ITaskDistributionService
         _taskRepository = taskRepository;
         _mapper = mapper;
         _logger = logger;
+        _context = context;
     }
 
-    public async Task DistributeTasksAsync()
+    public async Task<List<TaskAssignmentDto>> DistributeTasksAsync()
     {
         var uncompletedTasks = await _taskService.GetUncompletedTasksAsync();
         var users = await _userService.GetAllUsersAsync();
+        var assignments = new List<TaskAssignmentDto>();
 
         if (!users.Any() || !uncompletedTasks.Any())
         {
             _logger.LogWarning("Task dağıtımı yapılamadı. Kullanıcı sayısı: {UserCount}, Task sayısı: {TaskCount}", users.Count(), uncompletedTasks.Count());
-            return;
+            return assignments;
         }
 
         int taskPerUser = uncompletedTasks.Count() / users.Count();
@@ -56,6 +62,14 @@ public class TaskDistributionService : ITaskDistributionService
                     var taskEntity = _mapper.Map<Tasks>(taskDto);
                     await _taskRepository.UpdateAsync(taskEntity);
 
+                    assignments.Add(new TaskAssignmentDto
+                    {
+                        TaskId = taskEntity.Id,
+                        TaskName = taskEntity.Name,
+                        UserId = user.Id,
+                        UserName = user.UserName
+                    });
+
                     _logger.LogInformation("Görev {TaskId} - {TaskName}, kullanıcı {UserId} - {UserName}'ye atanmıştır.",
                                         taskEntity.Id, taskEntity.Name, user.Id, user.UserName);
 
@@ -75,6 +89,14 @@ public class TaskDistributionService : ITaskDistributionService
             var taskEntity = _mapper.Map<Tasks>(taskDto);
             await _taskRepository.UpdateAsync(taskEntity);
 
+            assignments.Add(new TaskAssignmentDto
+            {
+                TaskId = taskEntity.Id,
+                TaskName = taskEntity.Name,
+                UserId = users.ElementAt(i).Id,
+                UserName = users.ElementAt(i).UserName
+            });
+
             _logger.LogInformation("Görev {TaskId} - {TaskName}, kullanıcı {UserId} - {UserName}'ye atanmıştır.",
                                 taskEntity.Id, taskEntity.Name, users.ElementAt(i).Id, users.ElementAt(i).UserName);
 
@@ -85,7 +107,10 @@ public class TaskDistributionService : ITaskDistributionService
         await _taskRepository.SaveChangesAsync();
 
         _logger.LogInformation("Task dağıtımı tamamlandı. {TaskCount} task dağıtıldı.", uncompletedTasks.Count);
+
+        return assignments;
     }
+
 
     public async Task<bool> AssignTaskToUserAsync(int taskId, int userId)
     {
@@ -156,4 +181,36 @@ public class TaskDistributionService : ITaskDistributionService
         var users = await _userService.GetAllUsersAsync();
         return _mapper.Map<List<UserDto>>(users);
     }
+
+    public async Task<bool> ConfirmAssignmentsAsync(List<TaskAssignmentDto> assignments)
+    {
+        bool allAssignmentsSuccessful = true;
+
+        foreach (var assignment in assignments)
+        {
+            try
+            {
+                var taskAssignment = new UserTask 
+                {
+                    UserId = assignment.UserId,
+                    TaskId = assignment.TaskId,
+                };
+
+                await _context.UserTasks.AddAsync(taskAssignment); 
+            }
+            catch (Exception ex)
+            {
+                allAssignmentsSuccessful = false;
+                Console.WriteLine($"Atama hatası: {ex.Message}");
+            }
+        }
+
+        if (allAssignmentsSuccessful)
+        {
+            await _context.SaveChangesAsync(); 
+        }
+
+        return allAssignmentsSuccessful;
+    }
+
 }
