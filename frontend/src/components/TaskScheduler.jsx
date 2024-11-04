@@ -6,51 +6,58 @@ function TaskScheduler() {
     const [completedTasks, setCompletedTasks] = useState([]);
     const [task, setTask] = useState("");
     const [priority, setPriority] = useState("top");
-    const [deadline, setDeadline] = useState("");
+    const [dueDate, setDueDate] = useState("");
 
-    // Load tasks from backend on component mount
     useEffect(() => {
         fetchTasks();
+        fetchCompletedTasks();
     }, []);
 
-    // Fetch tasks from API
     const fetchTasks = async () => {
         try {
-            const response = await fetch("/api/tasks");
+            const response = await fetch("https://localhost:7184/api/TaskScheduler/active-tasks");
             const data = await response.json();
-            setTasks(data.filter((task) => !task.done));
-            setCompletedTasks(data.filter((task) => task.done));
+            setTasks(data);
         } catch (error) {
-            console.error("Error fetching tasks:", error);
+            console.error("Error fetching active tasks:", error);
+        }
+    };
+
+    const fetchCompletedTasks = async () => {
+        try {
+            const response = await fetch("https://localhost:7184/api/TaskScheduler/completed-tasks");
+            const data = await response.json();
+            setCompletedTasks(data);
+        } catch (error) {
+            console.error("Error fetching completed tasks:", error);
         }
     };
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
-    const handleDeadlineChange = (e) => setDeadline(e.target.value);
+    const handleDueDateChange = (e) => setDueDate(e.target.value);
 
-    // Add task through API
     const addTask = async () => {
-        if (task.trim() === "" || deadline === "") {
-            alert("Please enter a task and select a valid deadline.");
+        if (task.trim() === "" || dueDate === "") {
+            alert("Lütfen bir görev ve geçerli bir teslim tarihi girin.");
             return;
         }
 
-        const selectedDate = new Date(deadline);
+        const selectedDate = new Date(dueDate);
         const currentDate = new Date();
         if (selectedDate <= currentDate) {
-            alert("Please select a future date for the deadline.");
+            alert("Lütfen ileri bir tarih seçin.");
             return;
         }
 
         const newTask = {
             taskName: task,
             priority,
-            deadline,
+            deadline: dueDate,
         };
 
         try {
-            const response = await fetch("/api/tasks", {
+            const response = await fetch("https://localhost:7184/api/TaskScheduler/add-task", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,31 +65,39 @@ function TaskScheduler() {
                 body: JSON.stringify(newTask),
             });
             if (response.ok) {
-                fetchTasks(); // Refresh tasks after adding
+                fetchTasks();
                 setTask("");
                 setPriority("top");
-                setDeadline("");
+                setDueDate("");
             } else {
-                alert("Failed to add task.");
+                alert("Görev eklenemedi.");
             }
         } catch (error) {
             console.error("Error adding task:", error);
         }
     };
 
-    // Mark task as complete through API
     const markDone = async (id) => {
         try {
-            const response = await fetch(`/api/tasks/${id}/complete`, {
+            const response = await fetch(`https://localhost:7184/api/TaskScheduler/complete-task/${id}`, {
                 method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
+
             if (response.ok) {
-                fetchTasks(); // Refresh tasks after marking complete
+                alert("Görev baþarýyla tamamlandý.");
+                fetchTasks(); // Görev tamamlandýktan sonra listeyi yenile
+                fetchCompletedTasks(); // Tamamlanmýþ görevleri yeniden yükle
             } else {
-                alert("Failed to mark task as complete.");
+                const errorData = await response.json();
+                console.error("Sunucu hatasý:", errorData);
+                alert(errorData.message || "Görev tamamlanamadý.");
             }
         } catch (error) {
-            console.error("Error marking task as complete:", error);
+            console.error("Görev tamamlama sýrasýnda hata oluþtu:", error);
+            alert("Görev tamamlanýrken bir hata oluþtu.");
         }
     };
 
@@ -94,33 +109,33 @@ function TaskScheduler() {
                 <input
                     type="text"
                     id="task"
-                    placeholder="Enter task..."
+                    placeholder="Görev girin..."
                     value={task}
                     onChange={handleTaskChange}
                 />
                 <select id="priority" value={priority} onChange={handlePriorityChange}>
-                    <option value="top">Top Priority</option>
-                    <option value="middle">Middle Priority</option>
-                    <option value="low">Less Priority</option>
+                    <option value="top">Yüksek Öncelik</option>
+                    <option value="middle">Orta Öncelik</option>
+                    <option value="low">Düþük Öncelik</option>
                 </select>
                 <input
                     type="date"
                     id="deadline"
-                    value={deadline}
-                    onChange={handleDeadlineChange}
+                    value={dueDate}
+                    onChange={handleDueDateChange}
                 />
                 <button id="add-task" onClick={addTask}>
                     Ekle
                 </button>
             </div>
 
-            <h2 className="heading">Aktif Gorevler</h2>
+            <h2 className="heading">Aktif Görevler</h2>
             <div className="task-list" id="task-list">
                 <table>
                     <thead>
                         <tr>
-                            <th>Gorev Adi</th>
-                            <th>Oncelik</th>
+                            <th>Görev Adý</th>
+                            <th>Öncelik</th>
                             <th>Teslim Tarihi</th>
                             <th>Durum</th>
                         </tr>
@@ -148,12 +163,12 @@ function TaskScheduler() {
             </div>
 
             <div className="completed-task-list">
-                <h2 className="cheading">Tamamlanmis Gorevler</h2>
+                <h2 className="cheading">Tamamlanmýþ Görevler</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Gorev Adi</th>
-                            <th>Oncelik</th>
+                            <th>Görev Adý</th>
+                            <th>Öncelik</th>
                             <th>Teslim Tarihi</th>
                         </tr>
                     </thead>

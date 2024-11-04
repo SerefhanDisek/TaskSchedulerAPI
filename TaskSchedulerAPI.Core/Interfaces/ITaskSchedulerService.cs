@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskSchedulerAPI.Core.DTOs;
+﻿using TaskSchedulerAPI.Core.DTOs;
 
 namespace TaskSchedulerAPI.Core.Interfaces
 {

@@ -80,7 +80,7 @@ const Tasks = () => {
 
     const markDone = async (id) => {
         try {
-            await axios.patch(`${API_URL}/${id}`, { isCompleted: true });
+            await axios.patch(`${API_URL}/mark-done/${id}`, { isCompleted: true });
             const updatedTasks = tasks.map((t) => (t.id === id ? { ...t, isCompleted: true } : t));
             setTasks(updatedTasks);
         } catch (error) {
@@ -168,11 +168,9 @@ const Tasks = () => {
                                 <td>{t.priority}</td>
                                 <td>{new Date(t.dueDate).toLocaleDateString()}</td>
                                 <td>
-                                    {!t.isCompleted && (
-                                        <button onClick={() => markDone(t.id)}>
-                                            Tamamla
-                                        </button>
-                                    )}
+                                    <button onClick={() => markDone(t.id)}>
+                                        Tamamla
+                                    </button>
                                 </td>
                                 <td>
                                     <button onClick={() => editTask(t)}>
@@ -187,8 +185,41 @@ const Tasks = () => {
                     </tbody>
                 </table>
             </div>
+
+            <h2 className="heading">Tamamlanmis Gorevler</h2>
+            <div className="task-list completed-tasks">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gorev Adi</th>
+                            <th>Aciklama</th>
+                            <th>Oncelik</th>
+                            <th>Teslim Tarihi</th>
+                            <th>Durum</th>
+                            <th>Islemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasks.filter(t => t.isCompleted).map((t) => (
+                            <tr key={t.id}>
+                                <td>{t.name}</td>
+                                <td>{t.description}</td>
+                                <td>{t.priority}</td>
+                                <td>{new Date(t.dueDate).toLocaleDateString()}</td>
+                                <td>Tamamlanmis</td>
+                                <td>
+                                    <button onClick={() => deleteTask(t.id)}>
+                                        Sil
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </main>
     );
 };
 
 export default Tasks;
+

@@ -73,6 +73,8 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskDistributionService, TaskDistributionService>();
+builder.Services.AddScoped<ITaskSchedulerService, TaskSchedulerService>();
+builder.Services.AddScoped<ITaskSchedulerRepository, TaskSchedulerRepository>();
 
 builder.Services.AddHangfire(config =>
 {

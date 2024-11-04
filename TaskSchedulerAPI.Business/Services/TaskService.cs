@@ -6,6 +6,7 @@ using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;
+using TaskSchedulerAPI.DataAccess.Repositories;
 
 namespace TaskSchedulerAPI.Business.Services
 {
@@ -112,6 +113,29 @@ namespace TaskSchedulerAPI.Business.Services
         public async Task<IEnumerable<Tasks>> GetActiveTasksAsync()
         {
             return await _taskRepository.GetActiveTasksAsync();
+        }
+
+        public async Task<bool> MarkTaskAsDoneAsync(int taskId)
+        {
+            var task = await _context.Tasks.FindAsync(taskId);
+            if (task == null) return false;
+
+            task.IsCompleted = true; 
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<List<TaskDto>> GetCompletedTasksAsync()
+        {
+            var userTasks = await _taskRepository.GetUserTasksByCompletionStatusAsync(true);
+
+            return userTasks.Select(ut => new TaskDto
+            {
+                Id = ut.Id,
+                Name = ut.Name,
+                IsCompleted = ut.IsCompleted
+            }).ToList();
         }
 
     }

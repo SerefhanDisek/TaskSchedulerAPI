@@ -2,7 +2,6 @@
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 script.type = 'text/javascript';
 script.onload = function () {
-    // jQuery yüklendikten sonra bu kod çalışacak
     $(document).ready(function () {
         const token = localStorage.getItem('jwtToken');
 

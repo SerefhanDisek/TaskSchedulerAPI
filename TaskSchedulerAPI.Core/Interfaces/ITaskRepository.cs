@@ -14,5 +14,6 @@ namespace TaskSchedulerAPI.Core.Interfaces
         Task SaveChangesAsync();
         Task<List<Tasks>> GetAllAsync(Expression<Func<Tasks, bool>> predicate);
         Task<IEnumerable<Tasks>> GetActiveTasksAsync();
+        Task<List<Tasks>> GetUserTasksByCompletionStatusAsync(bool isCompleted);
     }
 }

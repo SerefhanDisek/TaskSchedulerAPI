@@ -9,7 +9,7 @@ namespace TaskSchedulerAPI.Core.DTOs
     public class UserTaskDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } // İsim özelliği
-        public bool IsCompleted { get; set; } // 0: Aktif, 1: Tamamlanmış
+        public string Name { get; set; } 
+        public bool IsCompleted { get; set; } 
     }
 }

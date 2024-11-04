@@ -64,5 +64,12 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
                 .Where(task => !task.IsCompleted) 
                 .ToListAsync();
         }
+        public async Task<List<Tasks>> GetUserTasksByCompletionStatusAsync(bool isCompleted)
+        {
+            return await _context.UserTasks
+                .Where(ut => ut.IsCompleted == isCompleted)
+                .Select(ut => ut.Tasks)
+                .ToListAsync();
+        }
     }
 }
