@@ -39,14 +39,14 @@ function TaskScheduler() {
 
     const addTask = async () => {
         if (task.trim() === "" || dueDate === "") {
-            alert("Lütfen bir görev ve geçerli bir teslim tarihi girin.");
+            alert("Lutfen bir görev ve gecerli bir teslim tarihi girin.");
             return;
         }
 
         const selectedDate = new Date(dueDate);
         const currentDate = new Date();
         if (selectedDate <= currentDate) {
-            alert("Lütfen ileri bir tarih seçin.");
+            alert("Lutfen ileri bir tarih secin.");
             return;
         }
 
@@ -70,7 +70,7 @@ function TaskScheduler() {
                 setPriority("top");
                 setDueDate("");
             } else {
-                alert("Görev eklenemedi.");
+                alert("oörev eklenemedi.");
             }
         } catch (error) {
             console.error("Error adding task:", error);
@@ -87,17 +87,17 @@ function TaskScheduler() {
             });
 
             if (response.ok) {
-                alert("Görev baþarýyla tamamlandý.");
-                fetchTasks(); // Görev tamamlandýktan sonra listeyi yenile
-                fetchCompletedTasks(); // Tamamlanmýþ görevleri yeniden yükle
+                alert("Gorev basariyla tamamlandi.");
+                fetchTasks(); 
+                fetchCompletedTasks(); 
             } else {
                 const errorData = await response.json();
-                console.error("Sunucu hatasý:", errorData);
-                alert(errorData.message || "Görev tamamlanamadý.");
+                console.error("Sunucu hatasi:", errorData);
+                alert(errorData.message || "Gorev tamamlanamadi.");
             }
         } catch (error) {
-            console.error("Görev tamamlama sýrasýnda hata oluþtu:", error);
-            alert("Görev tamamlanýrken bir hata oluþtu.");
+            console.error("Gorev tamamlama sirasinda hata olustu:", error);
+            alert("Gorev tamamlanirken bir hata olustu.");
         }
     };
 
@@ -109,14 +109,14 @@ function TaskScheduler() {
                 <input
                     type="text"
                     id="task"
-                    placeholder="Görev girin..."
+                    placeholder="Gorev girin..."
                     value={task}
                     onChange={handleTaskChange}
                 />
                 <select id="priority" value={priority} onChange={handlePriorityChange}>
-                    <option value="top">Yüksek Öncelik</option>
-                    <option value="middle">Orta Öncelik</option>
-                    <option value="low">Düþük Öncelik</option>
+                    <option value="top">Yuksek Oncelik</option>
+                    <option value="middle">Orta Oncelik</option>
+                    <option value="low">Düsük Oncelik</option>
                 </select>
                 <input
                     type="date"
@@ -129,13 +129,13 @@ function TaskScheduler() {
                 </button>
             </div>
 
-            <h2 className="heading">Aktif Görevler</h2>
+            <h2 className="heading">Aktif Gorevler</h2>
             <div className="task-list" id="task-list">
                 <table>
                     <thead>
                         <tr>
-                            <th>Görev Adý</th>
-                            <th>Öncelik</th>
+                            <th>Gorev Adi</th>
+                            <th>Oncelik</th>
                             <th>Teslim Tarihi</th>
                             <th>Durum</th>
                         </tr>
@@ -163,12 +163,12 @@ function TaskScheduler() {
             </div>
 
             <div className="completed-task-list">
-                <h2 className="cheading">Tamamlanmýþ Görevler</h2>
+                <h2 className="cheading">Tamamlanmis Gorevler</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Görev Adý</th>
-                            <th>Öncelik</th>
+                            <th>Gorev Adi</th>
+                            <th>Oncelik</th>
                             <th>Teslim Tarihi</th>
                         </tr>
                     </thead>
