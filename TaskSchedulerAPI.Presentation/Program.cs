@@ -126,6 +126,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+/*app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+    await next();
+});*/
 app.UseCors("AllowAllOrigins");
 app.UseStaticFiles();
 app.UseRouting();

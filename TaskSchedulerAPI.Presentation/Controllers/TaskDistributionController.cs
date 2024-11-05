@@ -20,8 +20,10 @@ public class TaskDistributionController : ControllerBase
     public async Task<IActionResult> GetActiveTasks()
     {
         var tasks = await _taskDistributionService.GetActiveTasksAsync();
-        return Ok(tasks);
+        var activeAssignedTasks = tasks.Where(t => !t.IsCompleted && t.AssignedUserId != null).ToList();
+        return Ok(activeAssignedTasks);
     }
+
 
     [HttpGet("get-users")]
     public async Task<IActionResult> GetUsers()

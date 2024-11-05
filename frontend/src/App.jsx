@@ -36,7 +36,7 @@ function App() {
     ]);
 
     const [currentFirm, setCurrentFirm] = useState("NUKON");
-    const [errorMessage, setErrorMessage] = useState(""); // Hata mesajlarý için state
+    const [errorMessage, setErrorMessage] = useState(""); 
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handlePriorityChange = (e) => setPriority(e.target.value);
@@ -56,7 +56,6 @@ function App() {
             return;
         }
 
-        // Hata mesajýný temizle
         setErrorMessage("");
 
         const newTask = {
@@ -137,7 +136,7 @@ function App() {
                                     </button>
                                 </div>
 
-                                {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Hata mesajý */}
+                                {errorMessage && <div className="error-message">{errorMessage}</div>} 
 
                                 <h2 className="heading">Aktif Gorevler</h2>
                                 <div className="task-list" id="task-list">

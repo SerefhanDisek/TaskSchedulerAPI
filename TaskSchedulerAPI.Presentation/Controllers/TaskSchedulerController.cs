@@ -21,7 +21,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             _mapper = mapper;
         }
 
-        // 1. Aktif Görevleri Getir
         [HttpGet("active-tasks")]
         public async Task<IActionResult> GetAllTasks()
         {
@@ -32,7 +31,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             return Ok(tasks);
         }
 
-        // 2. Tamamlanmış Görevleri Getir
         [HttpGet("completed-tasks")]
         public async Task<IActionResult> GetCompletedTasks()
         {
@@ -50,7 +48,6 @@ namespace TaskSchedulerAPI.Presentation.Controllers
             }
         }
 
-        // 3. Yeni Görev Oluştur
         [HttpPost("add-task")]
         public async Task<IActionResult> CreateTask([FromBody] TaskCreateDto taskDto)
         {
@@ -80,10 +77,8 @@ namespace TaskSchedulerAPI.Presentation.Controllers
                 return NotFound(new { message = "Görev bulunamadı" });
             }
 
-            // Görevi tamamlandı olarak işaretle
             task.IsCompleted = true;
 
-            // TaskDto'yu AutoMapper ile TaskUpdateDto'ya dönüştür
             var taskUpdateDto = _mapper.Map<TaskUpdateDto>(task);
 
             await _taskService.UpdateTaskAsync(taskUpdateDto);
