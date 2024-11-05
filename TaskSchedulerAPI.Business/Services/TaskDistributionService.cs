@@ -6,12 +6,14 @@ using TaskSchedulerAPI.Core.Entities;
 using TaskSchedulerAPI.Core.Interfaces;
 using TaskSchedulerAPI.Core.Interfaces.Services;
 using TaskSchedulerAPI.DataAccess;
+using TaskSchedulerAPI.DataAccess.Repositories;
 
 public class TaskDistributionService : ITaskDistributionService
 {
     private readonly ITaskService _taskService;
     private readonly IUserService _userService;
     private readonly ITaskRepository _taskRepository;
+    private readonly IUserTaskRepository _userTaskRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<TaskDistributionService> _logger;
     private readonly TaskSchedulerDbContext _context;
@@ -20,6 +22,7 @@ public class TaskDistributionService : ITaskDistributionService
         ITaskService taskService,
         IUserService userService,
         ITaskRepository taskRepository,
+        IUserTaskRepository userTaskRepository,
         IMapper mapper,
         TaskSchedulerDbContext context,
         ILogger<TaskDistributionService> logger)
@@ -27,6 +30,7 @@ public class TaskDistributionService : ITaskDistributionService
         _taskService = taskService;
         _userService = userService;
         _taskRepository = taskRepository;
+        _userTaskRepository = userTaskRepository;
         _mapper = mapper;
         _logger = logger;
         _context = context;
@@ -173,8 +177,27 @@ public class TaskDistributionService : ITaskDistributionService
     public async Task<List<TaskDto>> GetActiveTasksAsync()
     {
         var tasks = await _taskRepository.GetActiveTasksAsync();
-        return _mapper.Map<List<TaskDto>>(tasks);
+        var userTasks = await _userTaskRepository.GetAllUserTasksAsync();
+
+        var tasksWithUsers = tasks.Select(task =>
+        {
+            var assignedUserIds = userTasks
+                .Where(ut => ut.TaskId == task.Id)
+                .Select(ut => ut.UserId)
+                .ToList();
+
+            return new TaskDto
+            {
+                Id = task.Id,
+                Name = task.Name,
+                IsCompleted = task.IsCompleted,
+                AssignedUserId = assignedUserIds.Any() ? (int?)assignedUserIds.First() : null
+            };
+        }).ToList();
+
+        return tasksWithUsers;
     }
+
 
     public async Task<List<UserDto>> GetUsersAsync()
     {
@@ -212,5 +235,27 @@ public class TaskDistributionService : ITaskDistributionService
 
         return allAssignmentsSuccessful;
     }
+
+    public async Task<List<TaskWithUsersDto>> GetActiveTasksWithUsersAsync()
+    {
+        var tasks = await _context.Tasks
+            .Where(t => !t.IsCompleted)
+            .Include(t => t.UserTasks)
+            .ThenInclude(ut => ut.User)
+            .Select(t => new TaskWithUsersDto
+            {
+                Id = t.Id,
+                Name = t.Name,
+                AssignedUsers = t.UserTasks.Select(ut => new UserDto
+                {
+                    Id = ut.User.Id,
+                    UserName = $"{ut.User.UserName} " 
+                }).ToList()
+            })
+            .ToListAsync();
+
+        return tasks;
+    }
+
 
 }

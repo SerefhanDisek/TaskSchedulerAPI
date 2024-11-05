@@ -70,11 +70,14 @@ builder.Services.AddDbContext<TaskSchedulerDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUserTaskService, UserTaskService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskDistributionService, TaskDistributionService>();
 builder.Services.AddScoped<ITaskSchedulerService, TaskSchedulerService>();
 builder.Services.AddScoped<ITaskSchedulerRepository, TaskSchedulerRepository>();
+builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
+builder.Services.AddScoped<ITaskDistributionRepository, TaskDistributionRepository>();
 
 builder.Services.AddHangfire(config =>
 {

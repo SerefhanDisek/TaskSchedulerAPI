@@ -16,14 +16,14 @@ function TaskDistribution({ updateTasks }) {
                 axios.get(`${API_URL}/get-users`)
             ]);
 
-            console.log("Tasks Data:", tasksResponse.data); // Konsolda görev verilerini kontrol edin
-            console.log("Users Data:", usersResponse.data); // Konsolda kullanýcý verilerini kontrol edin
+            console.log("Tasks Response:", tasksResponse.data);
+            console.log("Users Response:", usersResponse.data);
 
             setTaskList(tasksResponse.data);
             setUsers(usersResponse.data);
             updateTasks(tasksResponse.data);
         } catch (error) {
-            console.error("Görevler ve kullanýcýlar çekilirken hata:", error.response ? error.response.data : error.message);
+            console.error("Gorevler veya kullanicilar cekilirken hata:", error.response ? error.response.data : error.message);
         }
     };
 
@@ -31,28 +31,39 @@ function TaskDistribution({ updateTasks }) {
         fetchTasksAndUsers();
     }, []);
 
-    const getUserName = (userId) => {
-        const user = users.find(user => user.id === userId);
-        return user ? user.name : "Atanmamýþ";
-    };
-
     return (
         <div className="task-distribution-container">
-            <h2>Görev Daðýtýmý</h2>
+            <h2>Gorev Dagitimi</h2>
             <table className="task-assignment-table">
                 <thead>
                     <tr>
-                        <th>Görev</th>
-                        <th>Atanan Kullanýcý</th>
+                        <th>Gorev</th>
+                        <th>Atanan Kullanici</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {tasks.map((task) => (
-                        <tr key={task.id}>
-                            <td>{task.name || task.taskName}</td> {/* task.name veya task.taskName olarak kontrol edin */}
-                            <td>{getUserName(task.assignedUserId || task.assignedTo)}</td> {/* assignedUserId veya assignedTo olarak kontrol edin */}
+                    {tasks.length > 0 ? (
+                        tasks.map((task) => (
+                            <tr key={task.id}>
+                                <td>{task.name}</td>
+                                <td>
+                                    {task.AssignedUsers && task.AssignedUsers.length > 0
+                                        ? task.AssignedUsers.map(assignedUserId => {
+                                            const user = users.find(user => user.id === assignedUserId);
+                                            console.log("Task ID:", task.id);
+                                            console.log("Assigned User ID:", assignedUserId);
+                                            console.log("Available Users:", users);
+                                            return user ? `${user.firstName} ${user.lastName}` : null; 
+                                        }).filter(name => name).join(", ") 
+                                        : "Atanmamis"}
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="2">Gorev bulunamadi.</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>
