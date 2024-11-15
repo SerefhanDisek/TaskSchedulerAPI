@@ -71,5 +71,10 @@ namespace TaskSchedulerAPI.DataAccess.Repositories
                 .Select(ut => ut.Tasks)
                 .ToListAsync();
         }
+
+        public async Task<Tasks> GetTaskByIdAsync(int taskId)
+        {
+            return await _context.Tasks.FindAsync(taskId); 
+        }
     }
 }

@@ -7,7 +7,6 @@ const API_URL = "https://localhost:7184/api/TaskDistribution";
 
 function TaskDistribution({ updateTasks }) {
     const [tasks, setTaskList] = useState([]);
-    const [users, setUsers] = useState([]);
 
     const fetchTasksAndUsers = async () => {
         try {
@@ -16,12 +15,29 @@ function TaskDistribution({ updateTasks }) {
                 axios.get(`${API_URL}/get-users`)
             ]);
 
-            console.log("Tasks Response:", tasksResponse.data);
-            console.log("Users Response:", usersResponse.data);
+            console.log("Gorevler API Yaniti:", tasksResponse.data);
+            console.log("Kullanicilar API Yaniti:", usersResponse.data);
 
-            setTaskList(tasksResponse.data);
-            setUsers(usersResponse.data);
-            updateTasks(tasksResponse.data);
+            const usersById = {};
+            usersResponse.data.forEach(user => {
+                usersById[user.id] = `${user.firstName} ${user.lastName}`;
+            });
+
+            const tasksWithUserNames = tasksResponse.data.map(task => {
+                const assignedUserNames = task.assignedUsers && task.assignedUsers.length > 0
+                    ? task.assignedUsers.map(userId => usersById[userId] || "Atanmamis")
+                    : ["Atanmamis"];
+
+                console.log(`Task ID: ${task.id}, Assigned User Names: ${assignedUserNames}`);
+
+                return {
+                    ...task,
+                    assignedUserNames,
+                };
+            });
+
+            setTaskList(tasksWithUserNames);
+            updateTasks(tasksWithUserNames);
         } catch (error) {
             console.error("Gorevler veya kullanicilar cekilirken hata:", error.response ? error.response.data : error.message);
         }
@@ -47,14 +63,8 @@ function TaskDistribution({ updateTasks }) {
                             <tr key={task.id}>
                                 <td>{task.name}</td>
                                 <td>
-                                    {task.AssignedUsers && task.AssignedUsers.length > 0
-                                        ? task.AssignedUsers.map(assignedUserId => {
-                                            const user = users.find(user => user.id === assignedUserId);
-                                            console.log("Task ID:", task.id);
-                                            console.log("Assigned User ID:", assignedUserId);
-                                            console.log("Available Users:", users);
-                                            return user ? `${user.firstName} ${user.lastName}` : null; 
-                                        }).filter(name => name).join(", ") 
+                                    {task.assignedUserNames && task.assignedUserNames.length > 0
+                                        ? task.assignedUserNames.join(", ")
                                         : "Atanmamis"}
                                 </td>
                             </tr>

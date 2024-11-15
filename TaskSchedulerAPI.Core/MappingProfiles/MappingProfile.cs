@@ -45,10 +45,13 @@ namespace TaskSchedulerAPI.Core.MappingProfiles
             //TaskDistribution
             CreateMap<TaskDto, Tasks>()
             .ForMember(dest => dest.AssignedUserId, opt => opt.MapFrom(src => src.AssignedUserId));
+            CreateMap<User, UserDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
 
             //TaskDto-TaskUpdateDto
             CreateMap<TaskDto, TaskUpdateDto>();
             CreateMap<TaskUpdateDto, TaskDto>();
+
         }
     }
 }

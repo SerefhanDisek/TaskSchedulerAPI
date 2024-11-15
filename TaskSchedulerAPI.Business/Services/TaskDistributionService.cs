@@ -257,5 +257,25 @@ public class TaskDistributionService : ITaskDistributionService
         return tasks;
     }
 
+    public async Task<IEnumerable<UserDto>> GetUsersWithActiveTasksAsync()
+    {
+        var activeUserTasks = await _context.UserTasks
+            .Where(ut => !ut.IsCompleted) 
+            .Join(_context.Users,
+                ut => ut.UserId,
+                user => user.Id,
+                (ut, user) => new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                })
+            .Distinct() 
+            .ToListAsync();
+
+        Console.WriteLine($"Active Users with Tasks: {activeUserTasks.Count()}");
+
+        return activeUserTasks;
+    }
 
 }

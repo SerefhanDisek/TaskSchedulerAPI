@@ -9,10 +9,10 @@ body {
     background-color: #f0f0f0;
     color: #333;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-direction: column; 
-    padding-top: 100px; /* Header sabitlenince içerik için boþluk býrak */
+    min-height: 100vh;
+    overflow: auto;
 }
 
 .header {
@@ -28,70 +28,108 @@ body {
     z-index: 1000;
 }
 
+main {
+    padding-top: 120px; 
+    width: 100%;
+    max-width: 800px;
+}
+
 h2 {
     font-size: 1.5rem;
     color: #FF7F00;
     margin-bottom: 10px;
 }
 
-.main {
-    max-width: 800px;
-    width: 100%;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
-    border-radius: 15px;
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.task-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
-.task-list {
-    max-height: 300px; /* Maksimum yükseklik */
-    overflow-y: auto; /* Dikey kaydýrma */
-    margin-top: 20px; /* Header ile boþluk býrak */
+    .task-form input,
+    .task-form select,
+    .task-form button {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .task-form button {
+        background-color: #FF7F00;
+        color: white;
+        cursor: pointer;
+    }
+
+        .task-form button:hover {
+            background-color: #d96900;
+        }
+
+.tasks-section {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.task-column {
+    width: 48%; 
+    max-height: 400px;
+    overflow-y: auto; 
     border: 1px solid #ddd;
     border-radius: 10px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th,
-table td {
     padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    background-color: #fff;
 }
 
-table th {
-    background-color: #FF7F00;
-    color: #fff;
-    position: sticky;
-    top: 0;
+.tasks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    .tasks-list li {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .tasks-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tasks-list li button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #FF7F00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .tasks-list li button:hover {
+                background-color: #d96900;
+            }
+
+.task-details {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    max-height: 300px;
+    overflow-y: auto; 
 }
 
 .error {
     color: red;
     font-weight: bold;
     margin-bottom: 10px;
-}
-
-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #FF7F00;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #d96900;
 }

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaskSchedulerAPI.Core.DTOs;
 using TaskSchedulerAPI.Core.Interfaces;
 
@@ -25,21 +22,22 @@ public class TaskDistributionController : ControllerBase
         {
             t.Id,
             t.Name,
-            AssignedUsers = t.AssignedUsers.Count > 0
-                ? t.AssignedUsers.Select(user => $"{user.UserName}").ToList()
-                : new List<string> { "Atanmamış" }, 
+            AssignedUsers = t.AssignedUsers != null && t.AssignedUsers.Any()
+                ? t.AssignedUsers.Select(userDto => $"{userDto.FirstName} {userDto.LastName}").ToList()
+                : new List<string> { "Atanmamış" },
             t.IsCompleted
         }).ToList();
 
         return Ok(activeAssignedTasks);
     }
 
-    [HttpGet("get-users")]
-    public async Task<IActionResult> GetUsers()
+    [HttpGet("get-active-users")]
+    public async Task<IActionResult> GetActiveUsers()
     {
-        var users = await _taskDistributionService.GetUsersAsync();
-        return Ok(users);
+        var usersWithActiveTasks = await _taskDistributionService.GetUsersWithActiveTasksAsync();
+        return Ok(usersWithActiveTasks);
     }
+
 
     [HttpPost("distribute")]
     public async Task<IActionResult> DistributeTasks()
@@ -54,16 +52,16 @@ public class TaskDistributionController : ControllerBase
         var result = await _taskDistributionService.UpdateTaskAssignmentAsync(request.TaskId, request.UserId);
         if (!result)
         {
-            return BadRequest("Task assignment could not be updated.");
+            return BadRequest("Görev ataması güncellenemedi.");
         }
 
-        return Ok("Task assignment updated successfully.");
+        return Ok("Görev ataması başarıyla güncellendi.");
     }
 
     [HttpPost("trigger-log")]
     public IActionResult TriggerLog()
     {
-        _taskDistributionService.DistributeTasksAsync().Wait();
-        return Ok("Log triggered.");
+        _taskDistributionService.DistributeTasksAsync().Wait(); 
+        return Ok("Log tetiklendi.");
     }
 }

@@ -14,6 +14,7 @@ namespace TaskSchedulerAPI.Core.Interfaces.Services
         Task<bool> UpdateTaskAssignmentAsync(int taskId, int userId);
         Task<bool> MarkTaskAsDoneAsync(int taskId);
         Task<List<TaskDto>> GetCompletedTasksAsync();
+        Task<TaskDetailsDto> GetTaskDetailsAsync(int taskId);
     }
 }
 

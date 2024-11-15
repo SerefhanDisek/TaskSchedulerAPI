@@ -1,5 +1,4 @@
 ﻿using TaskSchedulerAPI.Core.DTOs;
-using TaskSchedulerAPI.Core.Entities;
 
 namespace TaskSchedulerAPI.Core.Interfaces
 {
@@ -13,6 +12,7 @@ namespace TaskSchedulerAPI.Core.Interfaces
         Task<bool> ConfirmAssignmentsAsync(List<TaskAssignmentDto> assignments);
         //Task<List<Tasks>> GetActiveTasksWithUsersAsync();
         Task<List<TaskWithUsersDto>> GetActiveTasksWithUsersAsync();
+        Task<IEnumerable<UserDto>> GetUsersWithActiveTasksAsync();
     }
 
 }

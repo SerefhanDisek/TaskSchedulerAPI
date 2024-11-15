@@ -138,5 +138,21 @@ namespace TaskSchedulerAPI.Business.Services
             }).ToList();
         }
 
+        public async Task<TaskDetailsDto> GetTaskDetailsAsync(int taskId)
+        {
+            var task = await _taskRepository.GetTaskByIdAsync(taskId) as Tasks;  
+            if (task == null)
+                return null;
+
+            return new TaskDetailsDto
+            {
+                Id = task.Id,
+                Name = task.Name,
+                Description = task.Description,
+                Priority = task.Priority,
+                DueDate = task.DueDate
+            };
+        }
+
     }
 }

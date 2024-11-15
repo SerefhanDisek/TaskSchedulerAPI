@@ -10,6 +10,7 @@ const Tasks = () => {
     const [dueDate, setDueDate] = useState("");
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
+    const [taskDetails, setTaskDetails] = useState(null); 
 
     const API_URL = "https://localhost:7184/api/Tasks";
 
@@ -108,6 +109,16 @@ const Tasks = () => {
         }
     };
 
+    const fetchTaskDetails = async (taskId) => {
+        try {
+            const response = await axios.get(`${API_URL}/${taskId}/details`);
+            setTaskDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching task details:", error);
+            setErrorMessage("Gorev detaylari alinirken bir hata olustu.");
+        }
+    };
+
     return (
         <main>
             <h2 className="heading">{editingTaskId ? "Gorevi Guncelle" : "Gorev Ekle"}</h2>
@@ -142,84 +153,58 @@ const Tasks = () => {
                     value={dueDate}
                     onChange={handleDueDateChange}
                 />
-                <button id="add-task" onClick={addTask}>
+                <button className="button" onClick={addTask}>
                     {editingTaskId ? "Guncelle" : "Ekle"}
                 </button>
             </div>
 
-            <h2 className="heading">Aktif Gorevler</h2>
-            <div className="task-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Gorev Adi</th>
-                            <th>Aciklama</th>
-                            <th>Oncelik</th>
-                            <th>Teslim Tarihi</th>
-                            <th>Durum</th>
-                            <th>Islemler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tasks.filter(t => !t.isCompleted).map((t) => (
-                            <tr key={t.id}>
-                                <td>{t.name}</td>
-                                <td>{t.description}</td>
-                                <td>{t.priority}</td>
-                                <td>{new Date(t.dueDate).toLocaleDateString()}</td>
-                                <td>
-                                    <button onClick={() => markDone(t.id)}>
-                                        Tamamla
-                                    </button>
-                                </td>
-                                <td>
-                                    <button onClick={() => editTask(t)}>
-                                        Duzenle
-                                    </button>
-                                    <button onClick={() => deleteTask(t.id)}>
-                                        Sil
-                                    </button>
-                                </td>
-                            </tr>
+            <h2>Gorevler</h2>
+            <div className="tasks-section">
+                <div className="task-column">
+                    <h3>Aktif Gorevler</h3>
+                    <ul className="tasks-list">
+                        {tasks.filter((task) => !task.isCompleted).map((task) => (
+                            <li key={task.id}>
+                                <div>
+                                    <strong>{task.name}</strong> <em>({task.priority})</em>
+                                    <button onClick={() => fetchTaskDetails(task.id)}>Detaylar</button>
+                                    <button onClick={() => markDone(task.id)}>Tamamla</button>
+                                    <button onClick={() => editTask(task)}>Düzenle</button>
+                                    <button onClick={() => deleteTask(task.id)}>Sil</button>
+                                </div>
+                            </li>
                         ))}
-                    </tbody>
-                </table>
+                    </ul>
+                </div>
+
+                <div className="task-column">
+                    <h3>Tamamlanmis Gorevler</h3>
+                    <ul className="tasks-list">
+                        {tasks.filter((task) => task.isCompleted).map((task) => (
+                            <li key={task.id}>
+                                <div>
+                                    <strong>{task.name}</strong> <em>({task.priority})</em>
+                                    <button onClick={() => fetchTaskDetails(task.id)}>Detaylar</button>
+                                    <span>Tamamlandi</span>
+                                    <button onClick={() => deleteTask(task.id)}>Sil</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
 
-            <h2 className="heading">Tamamlanmis Gorevler</h2>
-            <div className="task-list completed-tasks">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Gorev Adi</th>
-                            <th>Aciklama</th>
-                            <th>Oncelik</th>
-                            <th>Teslim Tarihi</th>
-                            <th>Durum</th>
-                            <th>Islemler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tasks.filter(t => t.isCompleted).map((t) => (
-                            <tr key={t.id}>
-                                <td>{t.name}</td>
-                                <td>{t.description}</td>
-                                <td>{t.priority}</td>
-                                <td>{new Date(t.dueDate).toLocaleDateString()}</td>
-                                <td>Tamamlanmis</td>
-                                <td>
-                                    <button onClick={() => deleteTask(t.id)}>
-                                        Sil
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {taskDetails && (
+                <div className="task-details">
+                    <h3>Gorev Detaylari</h3>
+                    <p><strong>Adi:</strong> {taskDetails.name}</p>
+                    <p><strong>Aciklama:</strong> {taskDetails.description}</p>
+                    <p><strong>Oncelik:</strong> {taskDetails.priority}</p>
+                    <p><strong>Teslim Tarihi:</strong> {new Date(taskDetails.dueDate).toLocaleDateString()}</p>
+                </div>
+            )}
         </main>
     );
 };
 
 export default Tasks;
-

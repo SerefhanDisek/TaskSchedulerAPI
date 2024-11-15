@@ -36,6 +36,16 @@ public class TasksController : ControllerBase
         return Ok(tasks);
     }
 
+    [HttpGet("{id}/details")]
+    public async Task<IActionResult> GetTaskDetails(int id)
+    {
+        var taskDetails = await _taskService.GetTaskDetailsAsync(id);
+        if (taskDetails == null)
+            return NotFound($"Task with ID {id} not found.");
+
+        return Ok(taskDetails);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTask(int id)
     {
@@ -86,13 +96,14 @@ public class TasksController : ControllerBase
         {
             var completedTasks = await _taskService.GetCompletedTasksAsync();
             if (completedTasks == null || !completedTasks.Any())
-                return NotFound(new { Message = "Tamamlanmış görev bulunamadı." });
+                return NotFound(new { Message = "No completed tasks found." });
 
             return Ok(completedTasks);
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { Message = "Tamamlanmış görevleri getirirken bir hata oluştu.", Error = ex.Message });
+            return StatusCode(500, new { Message = "Error occurred while fetching completed tasks.", Error = ex.Message });
         }
     }
 }
+
